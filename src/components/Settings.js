@@ -107,10 +107,10 @@ function Settings() {
     }
 
     const getComments = () => {
-        let apiKey = 'AIzaSyDt10QAk9-KpignKfb_luUOg1UWASVEE5g'
+        let apiKey = process.env.REACT_APP_API_KEY
         let ID = videoID
         let maxResults = 100
-        let maxSearchLength = Infinity
+        let maxSearchLength = 10
         
         async function fetchComments(textArr, token) {
 
