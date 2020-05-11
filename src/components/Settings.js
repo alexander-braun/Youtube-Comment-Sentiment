@@ -1,19 +1,33 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import '../styles/settings.css'
 
 import SearchIcon from '@material-ui/icons/Search'
 import { makeStyles } from '@material-ui/core/styles'
 
+import { 
+    setSentiment, 
+    setSentimentCount, 
+    setHighestComment, 
+    setLowestComment, 
+    setCommentCount 
+} from '../actions/setSentiments'
+
+import { setKeycounts } from '../actions/setKeycounts'
+import { setVideoTitle } from '../actions/setVideoTitle'
+
 var Analyzer = require('natural').SentimentAnalyzer
 var stemmer = require('natural').PorterStemmer
 var natural = require('natural')
 var keyword_extractor = require("keyword-extractor")
+let apiKey = process.env.REACT_APP_API_KEY
 
 const useStyles = makeStyles((theme) => ({
     searchIcon: {
       color: 'rgba(128, 128, 128, 0.5)',
       position: 'absolute',
-      right: '10px'
+      right: '10px',
+      cursor: 'pointer'
     },
 }))
 
@@ -89,7 +103,6 @@ const overallSentiment = (comments) => {
             sentiments += sentiment
         }
     }
-    console.log(highest, lowest)
     return [sentiments / length, sentimentCount, highest, lowest]
 }
 
@@ -107,50 +120,69 @@ const cleanComments = (comments) => {
     return cleanedComments
 }
 
+const getVideoTitle = async (ID) => {
+    if(ID && ID !== undefined) {
+        let url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${ID}&fields=items(id%2Csnippet)&key=${apiKey}`
+
+        const response = await fetch(url)   
+        const data = await response.json()
+        const title = await data['items'][0]['snippet']['title']  
+        return title
+    }
+    return null
+}
+
 function Settings() {
 
     const [videoLink, updateVideoLink] = useState('')
     const [videoID, updateVideoID] = useState()
-    const [sentiment, updateSentiment] = useState()
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
         // Get and Update Video ID
         const ID = shortenToVideoID(videoLink)
         updateVideoID(ID)
-    }, [videoLink, sentiment])
+    }, [videoLink])
 
     // Main knot to get all needed information from the api
     const calc = async (e) => {
         e.preventDefault()
 
+        // Get Video Title
+        let videoTitle = await getVideoTitle(videoID)
+
+        dispatch(setVideoTitle(videoTitle))
+
         // Get last 100 comments
         let comments = await getComments()
-        console.log('comments', comments.flat())
         if(comments.length === 0) return
         comments = comments.flat()
 
-        // Extract comment from [comment, likes]
+        // Extract comments from [comment, likes]
         let cleanedComments = cleanComments(comments)
+        let commentCount = cleanedComments.length
+        dispatch(setCommentCount(commentCount))
 
         // Calculate the sentiment and update
         let sentimentCollector = overallSentiment(cleanedComments)
         let sentiment = sentimentCollector[0]
         let sentimentCount = sentimentCollector[1]
-        let highesComment = sentimentCollector[2]
+        let highestComment = sentimentCollector[2]
         let lowestComment = sentimentCollector[3]
         
-        console.log(sentimentCollector)
-
-        updateSentiment(sentiment)
+        dispatch(setSentiment(sentiment))
+        dispatch(setSentimentCount(sentimentCount))
+        dispatch(setHighestComment(highestComment))
+        dispatch(setLowestComment(lowestComment))
 
         // Get all the keywords from all the comments and count them
         let keywords = getKeywords(cleanedComments)
-        let keycounts = countKeywords(keywords)
-        console.log(keycounts, sentiment)
+        let keyCounts = countKeywords(keywords)
+        dispatch(setKeycounts(keyCounts))
     }
 
     const getComments = () => {
-        let apiKey = process.env.REACT_APP_API_KEY
         let ID = videoID
         let maxResults = 100
         let maxSearchLength = 10
