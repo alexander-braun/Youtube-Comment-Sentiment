@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import '../styles/settings.css'
 
+import SearchIcon from '@material-ui/icons/Search'
+import { makeStyles } from '@material-ui/core/styles'
+
 var Analyzer = require('natural').SentimentAnalyzer
 var stemmer = require('natural').PorterStemmer
 var natural = require('natural')
 var keyword_extractor = require("keyword-extractor")
 
+const useStyles = makeStyles((theme) => ({
+    searchIcon: {
+      color: 'rgba(128, 128, 128, 0.5)',
+      position: 'absolute',
+      right: '10px'
+    },
+}))
 
 const getKeywords = (comments) => {
     let keywords = []
@@ -52,21 +62,49 @@ const overallSentiment = (comments) => {
     let tokenizer = new natural.WordTokenizer()
     let length = comments.length
     let sentiments = parseFloat(0)
-    
+
+    // Counts POS and NEG comments POS/NEG
+    let sentimentCount = [0, 0]
+
+    // Set highest and lowest commentscore
+
+    let highest = [-10, null]
+    let lowest = [10, null]
+
     for(let i = 0; i < length; i++) {
+
+        // Get sentiment number
         let tokenized = tokenizer.tokenize(comments[i])
         const sentiment = parseFloat(analyzer.getSentiment(tokenized))
+
+        // Add POS or NEG
+        sentiment > 0 && sentimentCount[0]++
+        sentiment < 0 && sentimentCount[1]++
+
+        sentiment > highest[0] && (highest[0] = sentiment) && (highest[1] = comments[i])
+        sentiment < lowest[0] && (lowest[0] = sentiment) && (lowest[1] = comments[i])
+
+        // Sometimes NaN is returned so this prevents it from beeing added to the overall score
         if(!isNaN(sentiment)) {
             sentiments += sentiment
         }
     }
-    return sentiments / length
+    console.log(highest, lowest)
+    return [sentiments / length, sentimentCount, highest, lowest]
 }
 
 const shortenToVideoID = (link) => {
     const equalSignIndex = link.search('=')
     const videoID = link.slice(equalSignIndex + 1)
     return videoID
+}
+
+const cleanComments = (comments) => {
+    let cleanedComments = []
+    for(let i = 0; i < comments.length; i++) {
+        cleanedComments.push(comments[i][0])
+    }
+    return cleanedComments
 }
 
 function Settings() {
@@ -81,6 +119,7 @@ function Settings() {
         updateVideoID(ID)
     }, [videoLink, sentiment])
 
+    // Main knot to get all needed information from the api
     const calc = async (e) => {
         e.preventDefault()
 
@@ -91,13 +130,17 @@ function Settings() {
         comments = comments.flat()
 
         // Extract comment from [comment, likes]
-        let cleanedComments = []
-        for(let i = 0; i < comments.length; i++) {
-            cleanedComments.push(comments[i][0])
-        }
+        let cleanedComments = cleanComments(comments)
 
         // Calculate the sentiment and update
-        let sentiment = overallSentiment(cleanedComments)
+        let sentimentCollector = overallSentiment(cleanedComments)
+        let sentiment = sentimentCollector[0]
+        let sentimentCount = sentimentCollector[1]
+        let highesComment = sentimentCollector[2]
+        let lowestComment = sentimentCollector[3]
+        
+        console.log(sentimentCollector)
+
         updateSentiment(sentiment)
 
         // Get all the keywords from all the comments and count them
@@ -115,7 +158,7 @@ function Settings() {
         async function fetchComments(textArr, token) {
 
             // If there are X comments already in array return array
-            if(textArr.length >= maxSearchLength) {
+            if(textArr.length >= maxSearchLength / 100) {
                 return textArr
             }
 
@@ -150,13 +193,15 @@ function Settings() {
         return fetchComments([], null)
     }
 
+    const classes = useStyles()
+
     return (
-        <div className="App">
+        <div className="settings">
             <form>
-                <label htmlFor="lname">Video Link</label>
-                <input type="text" id="video-link" name="video-link" onChange={e => updateVideoLink(e.target.value)} value={videoLink} />
-                <button onClick={calc} value="Search">Search</button>
+                <input placeholder="Youtube video link..." type="text" id="video-link" name="video-link" onChange={e => updateVideoLink(e.target.value)} value={videoLink} />
+                <SearchIcon className={classes.searchIcon} onClick={calc}/>
             </form> 
+            <button onClick={calc} value="Search">Search</button>
         </div>
     )
 }

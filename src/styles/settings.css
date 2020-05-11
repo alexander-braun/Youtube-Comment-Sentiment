@@ -1,1 +1,60 @@
-/* No CSS *//*# sourceMappingURL=settings.css.map */
+@import url("https://fonts.googleapis.com/css2?family=Paytone+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+.App {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+form label {
+  font-family: 'Open Sans', sans-serif;
+}
+
+form input {
+  height: 27px;
+  width: 350px;
+  border-radius: 50px;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  padding-left: 10px;
+}
+
+form .search-icon {
+  position: absolute;
+  cursor: pointer;
+}
+
+h1 {
+  font-family: 'Paytone One', sans-serif;
+  color: #cc0000;
+  font-size: 50px;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.settings button {
+  margin-top: 2em;
+  background-color: #36B359;
+  color: white;
+  padding: 5px 10px;
+  font-family: 'Open Sans', sans-serif;
+  border: none;
+  border-radius: 5px;
+}
+/*# sourceMappingURL=settings.css.map */
