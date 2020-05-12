@@ -6,6 +6,7 @@ function App() {
   return (
     <div className="App">
       <h1>Consensus</h1>
+      <p className="subheading">AFINN Youtube Sentiment Analysis</p>
       <Settings />
       <Display />
     </div>

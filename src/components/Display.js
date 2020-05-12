@@ -4,6 +4,7 @@ import '../styles/settings.css'
 import Bubblechart from './Bubblechart'
 import MaxComments from './MaxComments'
 import AverageSentiment from './AverageSentiment'
+import Scaleline from './Scaleline'
 
 function Display() {
 
@@ -15,14 +16,11 @@ function Display() {
     const keyCounts = useSelector(state => state.keyCounts)
     const commentCount = useSelector(state => state.sentiment.commentCount)
 
-    console.log(keyCounts)
-
-    console.log(highestComment, lowestComment)
     if(!sentiment) return null
     return (
         <div className="Display">
+            <MaxComments lowestComment={lowestComment} highestComment={highestComment} />
             <AverageSentiment sentiment={sentiment} />
-            <MaxComments highestComment={highestComment} lowestComment={lowestComment} />
             <Bubblechart data={keyCounts} />
         </div>
     )

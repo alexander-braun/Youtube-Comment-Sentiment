@@ -29,11 +29,11 @@ function Bubblechart({ data }) {
             scoreValues.push(entry[1])
         }
         scoreValues.sort()
-        scoreValues = scoreValues.slice(scoreValues.length - 35)
+        scoreValues = scoreValues.slice(scoreValues.length - 25)
         const newEntries = []
         let counter = 0
         return entries.filter(arr => {
-            if(scoreValues.indexOf(arr[1]) !== -1 && counter < 35) {
+            if(scoreValues.indexOf(arr[1]) !== -1 && counter < 25) {
                 counter++
                 return arr
             }
@@ -73,11 +73,11 @@ function Bubblechart({ data }) {
 
         const colorScale = scaleOrdinal()
             .domain(new Set(scoreValues))
-            .range(["#03A6A6", "#F2CB05", "#F28705", "#D92818", "#D94141", "#0976B8", "#10689E"])
+            .range(["#00e8e8", "#F2CB05", "#F28705", "#D92818", "#D94141", "#0ba3ff", "#6aafda"])
         
         const scaleL = d3.scaleSqrt()
             .domain([minValue, maxValue])
-            .range([30, 60])
+            .range([30, 70])
         
         svg
             .style("width", '100%')
@@ -150,7 +150,7 @@ function Bubblechart({ data }) {
                             element !== 'y'
                         )
 
-                        return scaleL(data[element]) / 2.5
+                        return scaleL(data[element]) / 3
                     }
                 })
                 .attr('font-family', 'Open Sans')
@@ -198,6 +198,7 @@ function Bubblechart({ data }) {
 
     return (
         <div ref={wrapperRef} className="bubblechart">
+            <h4>Most used keywords:</h4>
             <svg ref={svgRef}>
 
             </svg>

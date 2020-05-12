@@ -1,16 +1,31 @@
 @import url("https://fonts.googleapis.com/css2?family=Paytone+One&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;400;500;600;800;900&display=swap");
 body {
   margin: 0;
   font-family: 'Open Sans', sans-serif;
+  background-color: white;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background: #f5f5f5;
 }
 
 .App {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  width: 80vw;
+  margin: 0 auto;
+  background: #ffffff;
+  min-height: 100vh;
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
 }
 
 form {
@@ -28,16 +43,26 @@ form label {
 
 form input {
   height: 27px;
-  width: 350px;
+  width: 380px;
   border-radius: 50px;
-  border: 1px solid rgba(128, 128, 128, 0.5);
+  border: 1px solid rgba(128, 128, 128, 0.2);
   padding-left: 10px;
+  background-color: white !important;
+  font-family: 'Raleway', sans-serif;
+}
+
+.subheading {
+  margin-top: 0px;
+  margin-bottom: 3vh;
+  color: #22222270;
+  font-family: "Raleway";
 }
 
 h1 {
   font-family: 'Paytone One', sans-serif;
   color: #cc0000;
   font-size: 50px;
+  margin-bottom: 0px;
 }
 
 .settings {
@@ -53,33 +78,61 @@ h1 {
   background-color: #36B359;
   color: white;
   padding: 5px 10px;
-  font-family: 'Open Sans', sans-serif;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1rem;
 }
 
 .bubblechart {
-  width: 100vw;
+  width: 100%;
   height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5vh;
 }
 
-.maxcomments, .overall_sentiment, .average_sentiment {
+.overall_sentiment, .average_sentiment {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+.maxcomments {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30vw;
+}
+
+.maxcomments .max_c_element {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 25px;
+  padding-right: 25px;
+  width: 25vw;
+  text-align: center;
+}
+
 .average_sentiment {
-  margin: 25px auto;
+  margin: 25px 0;
   font-weight: 400;
   font-size: 1rem;
+  width: 30vw;
 }
 
 .average_sentiment div {
-  font-size: 3rem;
+  font-size: 1.5rem;
   font-weight: 600;
+  font-family: 'Paytone One', sans-serif;
+  letter-spacing: .2rem;
 }
 
 .Display {
@@ -89,6 +142,7 @@ h1 {
   justify-content: center;
   align-items: center;
   margin-top: 5vh;
+  width: 80vw;
 }
 
 .Display .videotitle {
@@ -96,25 +150,71 @@ h1 {
   font-weight: 600;
 }
 
-.highest_comment, .lowest_comment {
+.max_c_element {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 25px;
+  border-radius: 25px;
+  padding-bottom: 1rem;
 }
 
-.highest_comment .sentiment, .lowest_comment .sentiment {
+.max_c_element .sentiment {
   font-style: italic;
   font-family: 'Open Sans', sans-serif;
-  font-size: 1.5rem;
   letter-spacing: .1rem;
+  font-size: 1.1rem;
 }
 
-.highest_comment .text, .lowest_comment .text {
+.max_c_element .text {
   margin-top: 1vh;
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: .05rem;
+  font-family: 'Paytone One', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: .2rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  font-family: 'Open Sans';
+  letter-spacing: .2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.scaleband {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-left: 5px solid #00CC3A;
+}
+
+.scaleband .scale_param {
+  margin: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: "Raleway";
+  font-weight: 600;
+}
+
+.scaleband .block_elem {
+  width: 20px;
+  height: 5px;
+  background-color: #00CC3A;
+  position: absolute;
+  transform: translate(-28px, 7px);
+  border-radius: 5px;
+}
+
+.scaleline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 /*# sourceMappingURL=settings.css.map */

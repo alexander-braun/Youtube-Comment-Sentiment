@@ -230,7 +230,7 @@ function Settings() {
     return (
         <div className="settings">
             <form>
-                <input placeholder="Youtube video link..." type="text" id="video-link" name="video-link" onChange={e => updateVideoLink(e.target.value)} value={videoLink} />
+                <input placeholder="Enter Youtube Video Link..." type="text" id="video-link" name="video-link" onChange={e => updateVideoLink(e.target.value)} value={videoLink} />
                 <SearchIcon className={classes.searchIcon} onClick={calc}/>
             </form> 
             <button onClick={calc} value="Search">Search</button>
