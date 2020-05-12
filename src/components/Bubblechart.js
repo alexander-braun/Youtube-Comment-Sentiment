@@ -73,15 +73,15 @@ function Bubblechart({ data }) {
 
         const colorScale = scaleOrdinal()
             .domain(new Set(scoreValues))
-            .range(["#03A6A6", "#F2CB05", "#F28705", "#D92818", "#D94141"])
+            .range(["#03A6A6", "#F2CB05", "#F28705", "#D92818", "#D94141", "#0976B8", "#10689E"])
         
         const scaleL = d3.scaleSqrt()
             .domain([minValue, maxValue])
             .range([30, 60])
         
         svg
-            .style("width", 50 + 'vw')
-            .style("height", 50 + 'vh')
+            .style("width", '100%')
+            .style("height", '100%')
 
         svg.attr('viewbox', `0 0 ${dimensions.width} ${dimensions.height}`)
 

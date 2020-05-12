@@ -2,7 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 body {
-    
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .App {
@@ -60,5 +61,58 @@ h1 {
 }
 
 .bubblechart {
-    margin-top: 50px;
+    width: 100vw;
+    height: 60vh;
+}
+
+.maxcomments, .overall_sentiment, .average_sentiment {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.average_sentiment {
+    margin: 25px auto;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+.average_sentiment div {
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.Display {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5vh;
+
+    .videotitle {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+}
+
+.highest_comment, .lowest_comment {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+    .sentiment {
+        font-style: italic;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1.5rem;
+        letter-spacing: .1rem;
+    }
+    .text {
+        margin-top: 1vh;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: .05rem;
+    }
 }
