@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "95f514bcbc7135c44e016e67e070dc24",
+    "revision": "c9377f0cf9eda0e7f40ae94b4b9c929c",
     "url": "/Youtube-Comment-Sentiment/index.html"
   },
   {
-    "revision": "ad6404add06ceb317d68",
-    "url": "/Youtube-Comment-Sentiment/static/css/main.7ae6d775.chunk.css"
+    "revision": "ecac125b44013c14e4d4",
+    "url": "/Youtube-Comment-Sentiment/static/css/main.42313100.chunk.css"
   },
   {
     "revision": "764bde0ff099c1e057d9",
@@ -16,7 +16,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Youtube-Comment-Sentiment/static/js/2.b9e26f20.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "ad6404add06ceb317d68",
+    "revision": "ecac125b44013c14e4d4",
     "url": "/Youtube-Comment-Sentiment/static/js/main.fd5a2cb5.chunk.js"
   },
   {
