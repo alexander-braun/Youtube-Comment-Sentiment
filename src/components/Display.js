@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import '../styles/settings.css'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import Bubblechart from './Bubblechart'
 import MaxComments from './MaxComments'
 import AverageSentiment from './AverageSentiment'
-import Scaleline from './Scaleline'
+import TitleStats from './TitleStats'
 
 function Display() {
 
@@ -19,8 +18,9 @@ function Display() {
     if(!sentiment) return null
     return (
         <div className="Display">
+            <TitleStats videoTitle={videoTitle} />
             <MaxComments lowestComment={lowestComment} highestComment={highestComment} />
-            <AverageSentiment sentiment={sentiment} />
+            <AverageSentiment sentiment={sentiment} sentimentCount={sentimentCount} />
             <Bubblechart data={keyCounts} />
         </div>
     )

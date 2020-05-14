@@ -2,14 +2,9 @@ import * as d3 from 'd3'
 import { 
     select, 
     forceSimulation, 
-    mouse, 
-    forceRadial, 
-    forceX, 
-    forceY, 
     scaleOrdinal, 
     forceCollide, 
     forceManyBody, 
-    hierarchy, 
     forceCenter } from "d3"
 import React, { useRef, useEffect } from "react"
 import useResizeObserver from './Resizeobserver'
@@ -20,32 +15,42 @@ function Bubblechart({ data }) {
     const dimensions = useResizeObserver(wrapperRef)
 
     const entries = Object.entries(data)
-    const alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz1234567890'
 
     let scoreValues = []
 
-    const heighest10Entries = () => {
+    const heighestXEntries = () => {
 
+        // Get all unique counts for a word and sort them
         for(let entry of entries) {
-            scoreValues.push(entry[1])
+            if(scoreValues.indexOf(entry[1]) === -1) scoreValues.push(Number(entry[1]))
         }
-        scoreValues.sort()
+        scoreValues.sort((a, b) => a - b)
 
+        // ScoreCount is the max number of bubbles for the bubblediagram
         let scoreCount = 25
         if(window.innerWidth < 700) scoreCount = 15
 
-        scoreValues = scoreValues.slice(scoreValues.length - scoreCount)
-        const newEntries = []
+        let newEntries = []
         let counter = 0
-        return entries.filter(arr => {
-            if(scoreValues.indexOf(arr[1]) !== -1 && counter < scoreCount) {
-                counter++
-                return arr
-            }
-        })
+
+        // goes backwards through the scores and pushes [word, count] into newEntries
+        for(let i = scoreValues.length; i > 0; i--) {
+            newEntries.push(...entries.filter(arr => {
+                if(arr[1] === scoreValues[i]) {
+                    counter++
+                    return arr
+                }
+            }))
+            if(counter >= scoreCount) break
+        }
+
+        return newEntries.slice(0, scoreCount)
     }
 
-    let newEntries = heighest10Entries()
+    let newEntries = heighestXEntries()
+
+    // Sorts the entries as object (for d3) into an array. Gets rid of single character mentions like = or -
     let cleanEntries = []
     for(let entry of newEntries) {
         if(entry[1] > 1) {
@@ -58,6 +63,7 @@ function Bubblechart({ data }) {
         }
     }
 
+    // Gets the minValue and maxValue of word counts
     let minValue
     let maxValue
     if(cleanEntries.length !== 0) {
@@ -71,18 +77,18 @@ function Bubblechart({ data }) {
 
     useEffect(() => {
         if(!dimensions) return
-
-        const root = hierarchy(cleanEntries)
-        const nodeData = root.descendants()
         const svg = select(svgRef.current)
         
+        // Colors for Bubbles
         const colorScale = scaleOrdinal()
             .domain(new Set(scoreValues))
             .range(["#00e8e8", "#F2CB05", "#F28705", "#D92818", "#D94141", "#0ba3ff", "#6aafda"])
         
+        // Determines the scale based on screen size
         let scaleBubbles = 1.2
         if(dimensions.width <= 700) scaleBubbles = 1
 
+        // Scale for bubbles using scale var
         const scaleL = d3.scaleSqrt()
             .domain([minValue, maxValue])
             .range([25 * scaleBubbles, 60 * scaleBubbles])
@@ -178,28 +184,6 @@ function Bubblechart({ data }) {
                 })
                 .attr('x', node => node.x)
                 .attr('y', node => node.y)
-
-                svg.on("click", () => {
-                    const [x, y] = mouse(svgRef.current);
-                    simulation
-                        .alpha(0.5)
-                        .restart()
-                        .force("orbit", forceRadial(100, x, y).strength(0.1));
-                    
-                })
-
-                svg.on("mousemove", () => {
-                    const [x, y] = mouse(svgRef.current);
-                    simulation
-                        .force(
-                            "x",
-                            forceX(x).strength(0.2)
-                        )
-                        .force(
-                            "y",
-                            forceY(y).strength(0.2)
-                        )
-                })
         })
             
     }, [dimensions, cleanEntries, data, maxValue, minValue])

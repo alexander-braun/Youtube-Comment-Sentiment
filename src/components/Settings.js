@@ -58,15 +58,15 @@ const countKeywords = (keywords) => {
         }
     }
 
+    // Put all of them into an object an count them
     let keyCount = {}
-
     for(let i = 0; i < keywords.length; i++) {
         for(let keyword of keywords[i]) {
             keyCount[keyword] && keyCount[keyword]++
             !keyCount[keyword] && (keyCount[keyword] = 1)
         }
     }
-    
+
     return keyCount
 }
 
@@ -77,10 +77,9 @@ const overallSentiment = (comments) => {
     let sentiments = parseFloat(0)
 
     // Counts POS and NEG comments POS/NEG
-    let sentimentCount = [0, 0]
+    let sentimentCount = [0, 0, 0]
 
     // Set highest and lowest commentscore
-
     let highest = [-10, null]
     let lowest = [10, null]
 
@@ -90,10 +89,11 @@ const overallSentiment = (comments) => {
         let tokenized = comments[i].split(' ')
         const sentiment = parseFloat(analyzer.getSentiment(tokenized))
 
-        // Add POS or NEG
-        sentiment > 0 && sentimentCount[0]++
-        sentiment < 0 && sentimentCount[1]++
-
+        // Add POS or NEG or NEUTRAL
+        sentiment > 0 && sentimentCount[2]++
+        sentiment === 0 && sentimentCount[1]++
+        sentiment < 0 && sentimentCount[0]++
+        
         sentiment > highest[0] && (highest[0] = sentiment) && (highest[1] = comments[i])
         sentiment < lowest[0] && (lowest[0] = sentiment) && (lowest[1] = comments[i])
 
@@ -102,14 +102,17 @@ const overallSentiment = (comments) => {
             sentiments += sentiment
         }
     }
+
     return [sentiments / length, sentimentCount, highest, lowest]
 }
 
+// Takes the video link and returns the ID
 const shortenToVideoID = (link) => {
     const equalSignIndex = link.search('=')
     const videoID = link.slice(equalSignIndex + 1)
     return videoID
 }
+
 
 const cleanComments = (comments) => {
     let cleanedComments = []
@@ -165,15 +168,11 @@ function Settings() {
 
         // Calculate the sentiment and update
         let sentimentCollector = overallSentiment(cleanedComments)
-        let sentiment = sentimentCollector[0]
-        let sentimentCount = sentimentCollector[1]
-        let highestComment = sentimentCollector[2]
-        let lowestComment = sentimentCollector[3]
         
-        dispatch(setSentiment(sentiment))
-        dispatch(setSentimentCount(sentimentCount))
-        dispatch(setHighestComment(highestComment))
-        dispatch(setLowestComment(lowestComment))
+        dispatch(setSentiment(sentimentCollector[0]))
+        dispatch(setSentimentCount(sentimentCollector[1]))
+        dispatch(setHighestComment(sentimentCollector[2]))
+        dispatch(setLowestComment(sentimentCollector[3]))
 
         // Get all the keywords from all the comments and count them
         let keywords = getKeywords(cleanedComments)
@@ -186,7 +185,7 @@ function Settings() {
         let maxResults = 100
         let maxSearchLength = 10
         
-        async function fetchComments(textArr, token) {
+        async function fetchComments(textArr = [], token) {
 
             // If there are X comments already in array return array
             if(textArr.length >= maxSearchLength / 100) {
@@ -205,7 +204,13 @@ function Settings() {
             const response = await fetch(url)    
             const data = await response.json()
             const nextPageToken = await data['nextPageToken']
-            const text = await data['items'].map(comment => {
+            let text = await data['items']
+
+            // If the address was f.e. empty and there are no results just return []
+            if(!text) return []
+
+            // Else put the text and the likecount (not used yet) into an array
+            text = text.map(comment => {
                 return [comment['snippet']['topLevelComment']['snippet']['textDisplay'], comment['snippet']['topLevelComment']['snippet']['likeCount']]
             })
 
@@ -213,9 +218,12 @@ function Settings() {
             textArr.push(text)
 
             // If there is one more comment page to load grab the nextpagetoken for that site
+            // Not used as it eats the free api usage too quickly. Could grab all other comments
+            // If used
             if(nextPageToken) {
                 return fetchComments(textArr, nextPageToken)
             }
+
             // Or else just return the array
             else if(!nextPageToken) return textArr
         }

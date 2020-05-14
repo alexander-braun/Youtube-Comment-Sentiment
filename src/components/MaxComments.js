@@ -11,8 +11,6 @@ function MaxComments({ lowestComment, highestComment }) {
         color: colorScale(highestComment[0])
     }
 
-    console.log(colorScale(lowestComment))
-
     const styleLowest = {
         color: colorScale(lowestComment[0])
     }
