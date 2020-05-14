@@ -25,15 +25,20 @@ function Bubblechart({ data }) {
     let scoreValues = []
 
     const heighest10Entries = () => {
+
         for(let entry of entries) {
             scoreValues.push(entry[1])
         }
         scoreValues.sort()
-        scoreValues = scoreValues.slice(scoreValues.length - 25)
+
+        let scoreCount = 25
+        if(window.innerWidth < 700) scoreCount = 15
+
+        scoreValues = scoreValues.slice(scoreValues.length - scoreCount)
         const newEntries = []
         let counter = 0
         return entries.filter(arr => {
-            if(scoreValues.indexOf(arr[1]) !== -1 && counter < 25) {
+            if(scoreValues.indexOf(arr[1]) !== -1 && counter < scoreCount) {
                 counter++
                 return arr
             }
@@ -70,14 +75,17 @@ function Bubblechart({ data }) {
         const root = hierarchy(cleanEntries)
         const nodeData = root.descendants()
         const svg = select(svgRef.current)
-
+        
         const colorScale = scaleOrdinal()
             .domain(new Set(scoreValues))
             .range(["#00e8e8", "#F2CB05", "#F28705", "#D92818", "#D94141", "#0ba3ff", "#6aafda"])
         
+        let scaleBubbles = 1.2
+        if(dimensions.width <= 700) scaleBubbles = 1
+
         const scaleL = d3.scaleSqrt()
             .domain([minValue, maxValue])
-            .range([30, 70])
+            .range([25 * scaleBubbles, 60 * scaleBubbles])
         
         svg
             .style("width", '100%')
