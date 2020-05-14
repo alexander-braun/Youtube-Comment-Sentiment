@@ -11,7 +11,6 @@
     "@testing-library/user-event": "^7.2.1",
     "core-js": "^3.6.5",
     "d3": "^5.16.0",
-    "keyword-extractor": "0.0.18",
     "natural": "^2.1.5",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",

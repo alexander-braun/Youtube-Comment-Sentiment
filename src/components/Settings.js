@@ -19,7 +19,7 @@ import { setVideoTitle } from '../actions/setVideoTitle'
 var Analyzer = require('natural').SentimentAnalyzer
 var stemmer = require('natural').PorterStemmer
 var natural = require('natural')
-var keyword_extractor = require("keyword-extractor")
+//var keyword_extractor = require("keyword-extractor")
 let apiKey = process.env.REACT_APP_API_KEY
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const getKeywords = (comments) => {
     let keywords = []
+    /*
     for(let i = 0; i < comments.length; i++) {
         let extraction = keyword_extractor.extract(comments[i], {
             language:"english",
@@ -42,6 +43,8 @@ const getKeywords = (comments) => {
         })
         keywords.push(extraction)
     }
+    */
+    keywords = [["osama", "balls"],["fake", "audio", "smmfh"]]
     return keywords
 }
 
