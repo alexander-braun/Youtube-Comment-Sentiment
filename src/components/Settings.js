@@ -18,8 +18,7 @@ import { setVideoTitle } from '../actions/setVideoTitle'
 
 var Analyzer = require('natural').SentimentAnalyzer
 var stemmer = require('natural').PorterStemmer
-var natural = require('natural')
-//var keyword_extractor = require("keyword-extractor")
+var keyword_extractor = require("keyword-extractor")
 let apiKey = process.env.REACT_APP_API_KEY
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 const getKeywords = (comments) => {
     let keywords = []
-    /*
+
     for(let i = 0; i < comments.length; i++) {
         let extraction = keyword_extractor.extract(comments[i], {
             language:"english",
@@ -43,8 +42,6 @@ const getKeywords = (comments) => {
         })
         keywords.push(extraction)
     }
-    */
-    keywords = [["osama", "balls"],["fake", "audio", "smmfh"]]
     return keywords
 }
 
@@ -76,7 +73,6 @@ const countKeywords = (keywords) => {
 const overallSentiment = (comments) => {
 
     let analyzer = new Analyzer("English", stemmer, "afinn")
-    let tokenizer = new natural.WordTokenizer()
     let length = comments.length
     let sentiments = parseFloat(0)
 
@@ -91,7 +87,7 @@ const overallSentiment = (comments) => {
     for(let i = 0; i < length; i++) {
 
         // Get sentiment number
-        let tokenized = tokenizer.tokenize(comments[i])
+        let tokenized = comments[i].split(' ')
         const sentiment = parseFloat(analyzer.getSentiment(tokenized))
 
         // Add POS or NEG
