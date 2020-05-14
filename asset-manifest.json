@@ -5,17 +5,17 @@
     "main.js.map": "/Youtube-Comment-Sentiment/static/js/main.8d197e7f.chunk.js.map",
     "runtime-main.js": "/Youtube-Comment-Sentiment/static/js/runtime-main.cb30e180.js",
     "runtime-main.js.map": "/Youtube-Comment-Sentiment/static/js/runtime-main.cb30e180.js.map",
-    "static/js/2.d53cffb2.chunk.js": "/Youtube-Comment-Sentiment/static/js/2.d53cffb2.chunk.js",
-    "static/js/2.d53cffb2.chunk.js.map": "/Youtube-Comment-Sentiment/static/js/2.d53cffb2.chunk.js.map",
+    "static/js/2.17beb7a8.chunk.js": "/Youtube-Comment-Sentiment/static/js/2.17beb7a8.chunk.js",
+    "static/js/2.17beb7a8.chunk.js.map": "/Youtube-Comment-Sentiment/static/js/2.17beb7a8.chunk.js.map",
     "index.html": "/Youtube-Comment-Sentiment/index.html",
-    "precache-manifest.1b66f8ed5826f034f317a54e8a1edf30.js": "/Youtube-Comment-Sentiment/precache-manifest.1b66f8ed5826f034f317a54e8a1edf30.js",
+    "precache-manifest.7d3b531e1336c6dbc995555623eb1e65.js": "/Youtube-Comment-Sentiment/precache-manifest.7d3b531e1336c6dbc995555623eb1e65.js",
     "service-worker.js": "/Youtube-Comment-Sentiment/service-worker.js",
     "static/css/main.42313100.chunk.css.map": "/Youtube-Comment-Sentiment/static/css/main.42313100.chunk.css.map",
-    "static/js/2.d53cffb2.chunk.js.LICENSE.txt": "/Youtube-Comment-Sentiment/static/js/2.d53cffb2.chunk.js.LICENSE.txt"
+    "static/js/2.17beb7a8.chunk.js.LICENSE.txt": "/Youtube-Comment-Sentiment/static/js/2.17beb7a8.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.cb30e180.js",
-    "static/js/2.d53cffb2.chunk.js",
+    "static/js/2.17beb7a8.chunk.js",
     "static/css/main.42313100.chunk.css",
     "static/js/main.8d197e7f.chunk.js"
   ]
