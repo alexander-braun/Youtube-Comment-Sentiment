@@ -10,11 +10,14 @@ import {
     setSentimentCount, 
     setHighestComment, 
     setLowestComment, 
-    setCommentCount 
+    setCommentCount
 } from '../actions/setSentiments'
 
 import { setKeycounts } from '../actions/setKeycounts'
 import { setVideoTitle } from '../actions/setVideoTitle'
+import { setComments } from '../actions/setComments'
+import { setHighestAndLowestCommentCount } from '../actions/setHighestAndLowestCommentCount'
+import { setHighestSingleWords, setLowestSingleWords } from '../actions/setSingleWordSentiments'
 
 var Analyzer = require('natural').SentimentAnalyzer
 var stemmer = require('natural').PorterStemmer
@@ -70,6 +73,21 @@ const countKeywords = (keywords) => {
     return keyCount
 }
 
+const findLikesForHighestAndLowestComment = (highest, lowest, comments) => {
+    let highestCommentLikes = 0
+    let lowestCommentLikes = 0
+    for(let comment of comments) {
+        if(comment[0] === highest[1]) {
+            highestCommentLikes = comment[1]
+        }
+        if(comment[0] === lowest[1]) {
+            lowestCommentLikes = comment[1]
+        }
+    }
+
+    return [highestCommentLikes, lowestCommentLikes]
+}
+
 const overallSentiment = (comments) => {
 
     let analyzer = new Analyzer("English", stemmer, "afinn")
@@ -83,10 +101,27 @@ const overallSentiment = (comments) => {
     let highest = [-10, null]
     let lowest = [10, null]
 
+    // Set highest and lowest score for individual words
+    let lowWords = []
+    let highWords = []
+
     for(let i = 0; i < length; i++) {
 
         // Get sentiment number
         let tokenized = comments[i].split(' ')
+
+        // Get the single word sentiments
+        let sentiSingle
+        for(let j = 0; j < tokenized.length; j++) {
+            sentiSingle = parseFloat(analyzer.getSentiment([tokenized[j]]))
+            if(sentiSingle <= -1) {
+                lowWords.push([tokenized[j], sentiSingle])
+            } else if(sentiSingle >= 1) {
+                highWords.push([tokenized[j], sentiSingle])
+            }
+        }
+
+        // Get the whole comments sentiment from here on
         const sentiment = parseFloat(analyzer.getSentiment(tokenized))
 
         // Add POS or NEG or NEUTRAL
@@ -102,8 +137,7 @@ const overallSentiment = (comments) => {
             sentiments += sentiment
         }
     }
-
-    return [sentiments / length, sentimentCount, highest, lowest]
+    return [sentiments / length, sentimentCount, highest, lowest, lowWords, highWords]
 }
 
 // Takes the video link and returns the ID
@@ -124,13 +158,13 @@ const cleanComments = (comments) => {
 
 const getVideoTitle = async (ID) => {
     if(ID && ID !== undefined) {
-        let url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${ID}&fields=items(id%2Csnippet)&key=${apiKey}`
-
+        let url = `https://www.googleapis.com/youtube/v3/videos?id=${ID}&key=${apiKey}&part=snippet`
         const response = await fetch(url)   
         const data = await response.json()
         const title = await data['items'][0]['snippet']['title']  
         return title
     }
+
     return null
 }
 
@@ -160,6 +194,7 @@ function Settings() {
         let comments = await getComments()
         if(comments.length === 0) return
         comments = comments.flat()
+        dispatch(setComments(comments))
 
         // Extract comments from [comment, likes]
         let cleanedComments = cleanComments(comments)
@@ -173,6 +208,12 @@ function Settings() {
         dispatch(setSentimentCount(sentimentCollector[1]))
         dispatch(setHighestComment(sentimentCollector[2]))
         dispatch(setLowestComment(sentimentCollector[3]))
+        dispatch(setLowestSingleWords(sentimentCollector[4]))
+        dispatch(setHighestSingleWords(sentimentCollector[5]))
+
+        // Get and set the likes for the highest and lowest sentiment comments
+        let highestLowest = findLikesForHighestAndLowestComment(sentimentCollector[2], sentimentCollector[3], comments)
+        dispatch(setHighestAndLowestCommentCount(highestLowest))
 
         // Get all the keywords from all the comments and count them
         let keywords = getKeywords(cleanedComments)

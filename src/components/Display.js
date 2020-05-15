@@ -19,8 +19,11 @@ function Display() {
     return (
         <div className="Display">
             <TitleStats videoTitle={videoTitle} />
-            <MaxComments lowestComment={lowestComment} highestComment={highestComment} />
-            <AverageSentiment sentiment={sentiment} sentimentCount={sentimentCount} />
+            <MaxComments 
+                sentimentCount={sentimentCount} 
+                lowestComment={lowestComment} 
+                highestComment={highestComment} 
+                sentiment={sentiment} />
             <Bubblechart data={keyCounts} />
         </div>
     )

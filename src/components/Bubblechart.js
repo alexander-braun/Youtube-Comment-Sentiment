@@ -57,8 +57,9 @@ function Bubblechart({ data }) {
             if(alphabet.indexOf(entry[0][0]) === -1){
                 continue
             }
-            let obj = {}
-            obj[entry[0]] = entry[1]
+            let obj = {'word': null, 'amount': null}
+            obj['word'] = entry[0]
+            obj['amount'] = entry[1]
             cleanEntries.push(obj)
         }
     }
@@ -69,7 +70,7 @@ function Bubblechart({ data }) {
     if(cleanEntries.length !== 0) {
         let minMaxNumbers = []
         for(let entry of cleanEntries) {
-            minMaxNumbers.push(entry[Object.keys(entry).join('')])
+            minMaxNumbers.push(entry['amount'])
         }
         minValue = d3.min(minMaxNumbers)
         maxValue = d3.max(minMaxNumbers)
@@ -78,14 +79,71 @@ function Bubblechart({ data }) {
     useEffect(() => {
         if(!dimensions) return
         const svg = select(svgRef.current)
-        
+        const mouseEnter = (value) => {
+            svg
+                .selectAll('.rec')
+                .data([[value['amount'], value['word']]])
+                .join(enter => enter.append("rect"))
+                .attr("class", "rec")
+                .attr("x", (node) => {
+                    for(let element of cleanEntries) {
+                        if(element['word'] === node[1]){
+                            return element['x'] + 100
+                        } 
+                    }
+                })
+                .attr('width', node => {
+                    return `${node[1].length * 4 + 250}px`
+                })
+                .attr('height', '40px')
+                .attr("text-anchor", "middle")
+                .attr("y", (node) => {
+                    for(let element of cleanEntries) {
+                        if(element['word'] === node[1]){
+                            return element['y']
+                        } 
+                    }
+                })
+                .attr("opacity", 1)
+                .attr('fill', 'white')
+                .style('stroke', node => {
+                    return colorScale(node[0])
+                })
+                .style('stroke-width', 3)
+                .attr("rx", 4)
+            svg
+                .selectAll(".tooltip")
+                .data([[value['amount'], value['word']]])
+                .join(enter => enter.append("text"))
+                .attr("class", "tooltip")
+                .text(node => {
+                    return `${node[0]} times used: '${node[1]}'`
+                })
+                .attr("x", (node) => {
+                    for(let element of cleanEntries) {
+                        if(element['word'] === node[1]){
+                            return element['x'] + 250
+                        } 
+                    }
+                })
+                .attr("text-anchor", "middle")
+                .attr("y", (node) => {
+                    for(let element of cleanEntries) {
+                        if(element['word'] === node[1]){
+                            return element['y'] + 25
+                        } 
+                    }
+                })
+                .attr("opacity", 1)
+                .attr('fill', 'black')
+        }
         // Colors for Bubbles
         const colorScale = scaleOrdinal()
             .domain(new Set(scoreValues))
             .range(["#00e8e8", "#F2CB05", "#F28705", "#D92818", "#D94141", "#0ba3ff", "#6aafda"])
         
         // Determines the scale based on screen size
-        let scaleBubbles = 1.2
+        let scaleBubbles = 1.3
         if(dimensions.width <= 700) scaleBubbles = 1
 
         // Scale for bubbles using scale var
@@ -98,20 +156,10 @@ function Bubblechart({ data }) {
             .style("height", '100%')
 
         svg.attr('viewbox', `0 0 ${dimensions.width} ${dimensions.height}`)
-
         const simulation = forceSimulation(cleanEntries)
             .force("charge", forceManyBody().strength(10))
             .force("collide", forceCollide().radius(d => {
-                const keys = Object.keys(d)
-                for(let element of keys) {
-                    if(element !== 'index' &&
-                        element !== 'vx' &&
-                        element !== 'vy' &&
-                        element !== 'x' && 
-                        element !== 'y'
-                    )
-                    return scaleL(data[element])
-                }
+                return scaleL(d['amount'])
             }))
             .force('center', forceCenter(dimensions.width / 2, dimensions.height  / 2))
             .on('tick', () => {
@@ -122,32 +170,20 @@ function Bubblechart({ data }) {
                 .join('circle')
                 .attr('class', 'node')
                 .attr('r', node => {
-                    const keys = Object.keys(node)
-                    for(let element of keys) {
-                        if(element !== 'index' &&
-                            element !== 'vx' &&
-                            element !== 'vy' &&
-                            element !== 'x' && 
-                            element !== 'y'
-                        )
-
-                        return scaleL(data[element])
-                    }
+                    return scaleL(node['amount'])
                 })
                 .style('fill', node => {
-                    const keys = Object.keys(node)
-                    for(let element of keys) {
-                        if(element !== 'index' &&
-                            element !== 'vx' &&
-                            element !== 'vy' &&
-                            element !== 'x' && 
-                            element !== 'y'
-                        )
-                        return colorScale(data[element])
-                    }
+                    return colorScale(node['amount'])
                 })
                 .attr('cx', node => node.x)
                 .attr('cy', node => node.y)
+                .on("mouseleave", () => {
+                    svg.selectAll(".tooltip").remove()
+                    svg.selectAll('.rec').remove()
+                })
+                .on("mouseenter", (value) => {
+                    mouseEnter(value)
+                })
             svg
                 .selectAll('.label')
                 .data(cleanEntries)
@@ -155,35 +191,19 @@ function Bubblechart({ data }) {
                 .attr('class', 'label')
                 .attr('text-anchor', 'middle')
                 .attr('font-size', node => {
-                    const keys = Object.keys(node)
-                    for(let element of keys) {
-                        if(element !== 'index' &&
-                            element !== 'vx' &&
-                            element !== 'vy' &&
-                            element !== 'x' && 
-                            element !== 'y'
-                        )
-
-                        return scaleL(data[element]) / 3
-                    }
+                    return scaleL(node['amount']) / 3
                 })
                 .attr('font-family', 'Open Sans')
                 .style('fill', 'black')
                 .attr('font-weight', '600')
                 .text(node => {
-                    const keys = Object.keys(node)
-                    for(let element of keys) {
-                        if(element !== 'index' &&
-                            element !== 'vx' &&
-                            element !== 'vy' &&
-                            element !== 'x' && 
-                            element !== 'y'
-                        )
-                        return element[0].toUpperCase() + element.slice(1)
-                    }
+                    return node['word']
                 })
                 .attr('x', node => node.x)
                 .attr('y', node => node.y)
+                .on("mouseenter", (value) => {
+                    mouseEnter(value)
+                })
         })
             
     }, [dimensions, cleanEntries, data, maxValue, minValue])

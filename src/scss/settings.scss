@@ -6,7 +6,7 @@
 body {
     margin: 0;
     font-family: 'Open Sans', sans-serif;
-    background-color: white;
+    background-color: #f5f5f6;
 }
 
 #root {
@@ -38,7 +38,7 @@ form {
 
     input {
         height: 27px;
-        width: 380px;
+        min-width: 350px;
         border-radius: 50px;
         border: 1px solid rgba(128, 128, 128, 0.2);
         padding-left: 10px;
@@ -88,7 +88,8 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 5vh;
+    margin-top: 5vh;
+
 }
 
 .overall_sentiment, .average_sentiment {
@@ -100,20 +101,31 @@ h1 {
 
 .maxcomments {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 80vw;
+    width: 100vw;
+    flex-wrap: wrap;
 
     .max_c_element {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-        padding-left: 25px;
-        padding-right: 25px;
-        width: 100%;
+        width: 300px;
         text-align: center;
+        background-color: white;
+        min-height: 200px;
+        justify-content: space-between;
+    }
+}
+
+.tooltip {
+    background-color: blue;
+}
+
+.node, .label {
+    &:hover {
+        cursor: pointer;
     }
 }
 
@@ -147,35 +159,85 @@ h1 {
     }
 }
 
+.title-card {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 28px;
+
+    div {
+        font-weight: 600;
+    }
+    span.text {
+        font-size: 1.25rem;
+    }
+    span {
+        width: fit-content;
+    }
+    .comment-likes {
+        //align-self: flex-end;
+        color: grey;
+        font-size: .9rem;
+    }
+}
+
+.comment-likes {
+    //align-self: flex-end;
+    color: grey;
+    font-size: .9rem;
+}
+
+.c_element_head {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
 .max_c_element {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 25px;
-    padding-bottom: 1rem;
-    //-webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
-    //box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    border-radius: 3px;
+    padding: 15px;
+    margin: 15px;
+    -webkit-box-shadow: 0 4px 5px 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.04), 0 2px 4px -1px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.04), 0 2px 4px -1px rgba(0,0,0,0.1);
 
     .sentiment {
-        font-style: italic;
         font-family: 'Open Sans', sans-serif;
         letter-spacing: .1rem;
-        font-size: 1.1rem;
+        font-size: 1rem;
+        margin-top: 2vh;
+        margin-bottom: 2vh;
+        font-weight: 200;
     }
     .text {
-        margin-top: 1vh;
         font-size: 1rem;
-        font-weight: 600;
         letter-spacing: .05rem;
-        font-family: 'Paytone One', sans-serif;
-        font-size: 1.5rem;
-        letter-spacing: .2rem;
+        font-size: 1.25rem;
+        font-weight: 800;
+        font-family: 'Open Sans', sans-serif;
+    }
+}
+
+.average-card {
+    .sentiment {
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: .1rem;
+        font-size: 1rem;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-weight: 200;
     }
 }
 
 h4 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     margin-bottom: 20px;
     margin-top: 10px;
     font-family: 'Open Sans';
@@ -185,13 +247,16 @@ h4 {
 }
 
 h2 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     margin-bottom: 20px;
     margin-top: 10px;
     font-family: 'Open Sans';
-    letter-spacing: .1rem;
+    letter-spacing: .02rem;
     font-weight: 900;
     text-align: center;
+    max-width: 500px;
+    margin-left: 5vw;
+    margin-right: 5vw;
 }
 
 .average_sentiment .sentiment .sentiment-count div {
@@ -243,6 +308,6 @@ h2 {
 
 @media only screen and (min-width: 1300px) {
     .maxcomments .max_c_element {
-        width: 40vw;
+        //width: 40vw;
     }
 }
