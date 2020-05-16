@@ -88,8 +88,11 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 5vh;
-
+    background-color: white;
+    border-radius: 15px;
+    margin-bottom: 10vh;
+    -webkit-box-shadow: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 1px 3px 0 rgba(0,0,0,0.12);
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 1px 3px 0 rgba(0,0,0,0.12);
 }
 
 .overall_sentiment, .average_sentiment {
@@ -104,14 +107,14 @@ h1 {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 100vw;
+    width: 95%;
     flex-wrap: wrap;
 
     .max_c_element {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 300px;
+        width: 100%;
         text-align: center;
         background-color: white;
         min-height: 200px;
@@ -202,11 +205,10 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 3px;
+    border-radius: 15px;
     padding: 15px;
-    margin: 15px;
-    -webkit-box-shadow: 0 4px 5px 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.04), 0 2px 4px -1px rgba(0,0,0,0.1);
-    box-shadow: 0 4px 5px 0 rgba(0,0,0,0.05), 0 1px 10px 0 rgba(0,0,0,0.04), 0 2px 4px -1px rgba(0,0,0,0.1);
+    margin-bottom: 2vh;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
 
     .sentiment {
         font-family: 'Open Sans', sans-serif;
@@ -307,7 +309,5 @@ h2 {
 
 
 @media only screen and (min-width: 1300px) {
-    .maxcomments .max_c_element {
-        //width: 40vw;
-    }
+
 }

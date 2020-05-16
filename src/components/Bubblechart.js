@@ -9,16 +9,14 @@ import {
 import React, { useRef, useEffect } from "react"
 import useResizeObserver from './Resizeobserver'
 
-function Bubblechart({ data }) {
+function Bubblechart({ data, dataSingleWords }) {
     const svgRef = useRef()
     const wrapperRef = useRef()
     const dimensions = useResizeObserver(wrapperRef)
-
     const entries = Object.entries(data)
     const alphabet = 'abcdefghijklmnopqrstuvwxyz1234567890'
 
     let scoreValues = []
-
     const heighestXEntries = () => {
 
         // Get all unique counts for a word and sort them
@@ -31,20 +29,16 @@ function Bubblechart({ data }) {
         let scoreCount = 25
         if(window.innerWidth < 700) scoreCount = 15
 
-        let newEntries = []
-        let counter = 0
-
         // goes backwards through the scores and pushes [word, count] into newEntries
+        let newEntries = []
         for(let i = scoreValues.length; i > 0; i--) {
             newEntries.push(...entries.filter(arr => {
                 if(arr[1] === scoreValues[i]) {
-                    counter++
                     return arr
                 }
             }))
-            if(counter >= scoreCount) break
+            if(newEntries.length >= scoreCount) break
         }
-
         return newEntries.slice(0, scoreCount)
     }
 
@@ -88,12 +82,13 @@ function Bubblechart({ data }) {
                 .attr("x", (node) => {
                     for(let element of cleanEntries) {
                         if(element['word'] === node[1]){
-                            return element['x'] + 100
+                            //return element['x'] + 100
                         } 
                     }
+                    return dimensions.width / 2 - 175
                 })
                 .attr('width', node => {
-                    return `${node[1].length * 4 + 250}px`
+                    return `${node[1].length * 4 + 300}px`
                 })
                 .attr('height', '40px')
                 .attr("text-anchor", "middle")
@@ -109,7 +104,7 @@ function Bubblechart({ data }) {
                 .style('stroke', node => {
                     return colorScale(node[0])
                 })
-                .style('stroke-width', 3)
+                .style('stroke-width', 2)
                 .attr("rx", 4)
             svg
                 .selectAll(".tooltip")
@@ -122,9 +117,10 @@ function Bubblechart({ data }) {
                 .attr("x", (node) => {
                     for(let element of cleanEntries) {
                         if(element['word'] === node[1]){
-                            return element['x'] + 250
+                            //return element['x'] + 250
                         } 
                     }
+                    return dimensions.width / 2
                 })
                 .attr("text-anchor", "middle")
                 .attr("y", (node) => {
@@ -156,6 +152,7 @@ function Bubblechart({ data }) {
             .style("height", '100%')
 
         svg.attr('viewbox', `0 0 ${dimensions.width} ${dimensions.height}`)
+        console.log(dataSingleWords)
         const simulation = forceSimulation(cleanEntries)
             .force("charge", forceManyBody().strength(10))
             .force("collide", forceCollide().radius(d => {
@@ -206,7 +203,7 @@ function Bubblechart({ data }) {
                 })
         })
             
-    }, [dimensions, cleanEntries, data, maxValue, minValue])
+    }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues])
 
     return (
         <div ref={wrapperRef} className="bubblechart">

@@ -14,6 +14,7 @@ function Display() {
     const videoTitle = useSelector(state => state.videoTitle)
     const keyCounts = useSelector(state => state.keyCounts)
     const commentCount = useSelector(state => state.sentiment.commentCount)
+    const singleWordSentiments = useSelector(state => state.singleWordSentiments)
 
     if(!sentiment) return null
     return (
@@ -24,7 +25,7 @@ function Display() {
                 lowestComment={lowestComment} 
                 highestComment={highestComment} 
                 sentiment={sentiment} />
-            <Bubblechart data={keyCounts} />
+            <Bubblechart data={keyCounts} dataSingleWords={singleWordSentiments}/>
         </div>
     )
 }

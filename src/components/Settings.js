@@ -84,7 +84,6 @@ const findLikesForHighestAndLowestComment = (highest, lowest, comments) => {
             lowestCommentLikes = comment[1]
         }
     }
-
     return [highestCommentLikes, lowestCommentLikes]
 }
 
@@ -114,13 +113,17 @@ const overallSentiment = (comments) => {
         let sentiSingle
         for(let j = 0; j < tokenized.length; j++) {
             sentiSingle = parseFloat(analyzer.getSentiment([tokenized[j]]))
+            let obj = {}
             if(sentiSingle <= -1) {
-                lowWords.push([tokenized[j], sentiSingle])
+                obj['word'] = tokenized[j]
+                obj['sentiment'] = sentiSingle
+                lowWords.push(obj)
             } else if(sentiSingle >= 1) {
-                highWords.push([tokenized[j], sentiSingle])
+                obj['word'] = tokenized[j]
+                obj['sentiment'] = sentiSingle
+                highWords.push(obj)
             }
         }
-
         // Get the whole comments sentiment from here on
         const sentiment = parseFloat(analyzer.getSentiment(tokenized))
 
@@ -210,7 +213,6 @@ function Settings() {
         dispatch(setLowestComment(sentimentCollector[3]))
         dispatch(setLowestSingleWords(sentimentCollector[4]))
         dispatch(setHighestSingleWords(sentimentCollector[5]))
-
         // Get and set the likes for the highest and lowest sentiment comments
         let highestLowest = findLikesForHighestAndLowestComment(sentimentCollector[2], sentimentCollector[3], comments)
         dispatch(setHighestAndLowestCommentCount(highestLowest))

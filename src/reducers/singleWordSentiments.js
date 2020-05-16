@@ -10,12 +10,12 @@ const initialState = {
 
 export const singleWordSentiments = (state = initialState, action) => {
     switch(action.type) {
-        case SET_LOWEST_SENTIMENT_SINGLE_WORDS:
+        case SET_HIGHEST_SENTIMENT_SINGLE_WORDS:
             return {
                 ...state,
                 highestSingleWords: action.highestSingleWords
             }
-        case SET_HIGHEST_SENTIMENT_SINGLE_WORDS:
+        case SET_LOWEST_SENTIMENT_SINGLE_WORDS:
             return {
                 ...state,
                 lowestSingleWords: action.lowestSingleWords
