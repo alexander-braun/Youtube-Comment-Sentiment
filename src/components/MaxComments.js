@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { scaleOrdinal, scaleLinear } from "d3"
 import { useSelector } from 'react-redux'
+import { v4 as uuidv4 } from 'uuid';
 
 function MaxComments({ lowestComment, highestComment, sentiment, sentimentCount }) {
 
@@ -28,7 +29,7 @@ function MaxComments({ lowestComment, highestComment, sentiment, sentimentCount 
         let output = []
         for(let heading of headings) {
             output.push(
-                <div className="max_c_element">
+                <div className="max_c_element" key={uuidv4()}>
                     <span className="title-card">
                         <div>{heading}</div>
                         <span 

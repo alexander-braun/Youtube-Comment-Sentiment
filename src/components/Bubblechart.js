@@ -5,8 +5,9 @@ import {
     scaleOrdinal, 
     forceCollide, 
     forceManyBody, 
-    forceCenter } from "d3"
-import React, { useRef, useEffect } from "react"
+    forceCenter,
+    scaleLinear } from "d3"
+import React, { useRef, useEffect, useState, useCallback } from "react"
 import useResizeObserver from './Resizeobserver'
 
 function Bubblechart({ data, dataSingleWords }) {
@@ -58,34 +59,72 @@ function Bubblechart({ data, dataSingleWords }) {
         }
     }
 
+    // Merge Singlewordsentiments and assign category 0 or 1
+    let sentimentWordsCombined = []
+    let category = 0
+    let keys = Object.keys(dataSingleWords)
+
+    let bubbles2Count = 15
+    if(dimensions && dimensions.width <= 700) bubbles2Count = 10
+    let count = 0
+
+    for(let key of keys) {
+        for(let i = 0; i < dataSingleWords[key].length; i++) {
+            if(count < bubbles2Count) {
+                let obj = dataSingleWords[key][i]
+                obj['category'] = category
+                sentimentWordsCombined.push(obj)    
+                count++
+            }
+        }
+        count = 0
+        category++
+    }
+
+    // Base bubbles on choice of keywords or sentiment words
+    const [choice, updateChoice] = useState('keywords')
+    const dataChoice = useCallback(() => {
+        return choice === 'keywords' ? cleanEntries : sentimentWordsCombined
+    }, [choice, cleanEntries, sentimentWordsCombined])
+
     // Gets the minValue and maxValue of word counts
     let minValue
     let maxValue
-    if(cleanEntries.length !== 0) {
+    if(dataChoice().length !== 0) {
         let minMaxNumbers = []
-        for(let entry of cleanEntries) {
-            minMaxNumbers.push(entry['amount'])
+        for(let entry of dataChoice()) {
+            minMaxNumbers.push(entry['amount' || 'sentiment'])
         }
         minValue = d3.min(minMaxNumbers)
         maxValue = d3.max(minMaxNumbers)
     }
 
     useEffect(() => {
+
+        let data = dataChoice()
+
         if(!dimensions) return
         const svg = select(svgRef.current)
         const mouseEnter = (value) => {
             svg
                 .selectAll('.rec')
-                .data([[value['amount'], value['word']]])
+                .data(() => {
+                    if(choice === 'sentiment') {
+                        return [[value['sentiment'], value['word']]]
+                    } else return [[value['amount'], value['word']]]
+                })
                 .join(enter => enter.append("rect"))
                 .attr("class", "rec")
                 .attr("x", (node) => {
                     for(let element of cleanEntries) {
-                        if(element['word'] === node[1]){
-                            //return element['x'] + 100
-                        } 
+                        if(choice !== 'sentiment') {
+                            if(element['word'] === node[1]){
+                                if(dimensions.width <= 700) {
+                                    return dimensions.width / 2 - 175
+                                }else return element['x'] + 100
+                            }   
+                        } else return dimensions.width / 2 - (node[1].length * 4 + 150)
                     }
-                    return dimensions.width / 2 - 175
                 })
                 .attr('width', node => {
                     return `${node[1].length * 4 + 300}px`
@@ -94,40 +133,59 @@ function Bubblechart({ data, dataSingleWords }) {
                 .attr("text-anchor", "middle")
                 .attr("y", (node) => {
                     for(let element of cleanEntries) {
-                        if(element['word'] === node[1]){
-                            return element['y']
-                        } 
+                        if(choice !== 'sentiment') {
+                            if(element['word'] === node[1]){
+                                return element['y']
+                            }     
+                        } else return dimensions.height / 2
                     }
                 })
                 .attr("opacity", 1)
                 .attr('fill', 'white')
                 .style('stroke', node => {
-                    return colorScale(node[0])
+                    if(choice !== 'sentiment') {
+                        return colorScale(node[0])
+                    } else {
+                        return colorScaleS(Math.abs(node[0]))
+                    }
                 })
                 .style('stroke-width', 2)
                 .attr("rx", 4)
             svg
                 .selectAll(".tooltip")
-                .data([[value['amount'], value['word']]])
+                .data(() => {
+                    if(choice === 'sentiment') {
+                        return [[value['sentiment'], value['word']]]
+                    } else return [[value['amount'], value['word']]]
+                })
                 .join(enter => enter.append("text"))
                 .attr("class", "tooltip")
                 .text(node => {
-                    return `${node[0]} times used: '${node[1]}'`
+                    if(choice === 'sentiment') {
+                        return `sentiment: ${node[0]}, word: "${node[1]}"`
+                    }else return `${node[0]} times used: "${node[1]}"`
                 })
                 .attr("x", (node) => {
+                    let x = dimensions.width / 2
                     for(let element of cleanEntries) {
                         if(element['word'] === node[1]){
-                            //return element['x'] + 250
+                            if(choice !== 'sentiment') {
+                                if(dimensions.width <= 700) {
+                                    x = dimensions.width / 2
+                                } else x = element['x'] + node[1].length * 4 + 200    
+                            } else x = dimensions.width / 2
                         } 
                     }
-                    return dimensions.width / 2
+                    return x
                 })
                 .attr("text-anchor", "middle")
                 .attr("y", (node) => {
                     for(let element of cleanEntries) {
-                        if(element['word'] === node[1]){
-                            return element['y'] + 25
-                        } 
+                        if(choice !== 'sentiment') {
+                            if(element['word'] === node[1]){
+                                return element['y'] + 25
+                            } 
+                        } else return dimensions.height / 2 + 25
                     }
                 })
                 .attr("opacity", 1)
@@ -137,7 +195,11 @@ function Bubblechart({ data, dataSingleWords }) {
         const colorScale = scaleOrdinal()
             .domain(new Set(scoreValues))
             .range(["#00e8e8", "#F2CB05", "#F28705", "#D92818", "#D94141", "#0ba3ff", "#6aafda"])
-        
+
+        const colorScaleS = scaleLinear()
+            .domain([0, 5])
+            .range(['rgb(217, 29, 0)', 'rgb(66, 230, 0)'])
+
         // Determines the scale based on screen size
         let scaleBubbles = 1.3
         if(dimensions.width <= 700) scaleBubbles = 1
@@ -147,30 +209,49 @@ function Bubblechart({ data, dataSingleWords }) {
             .domain([minValue, maxValue])
             .range([25 * scaleBubbles, 60 * scaleBubbles])
         
+        let scaleBubblesS = 2
+
+        const scaleLS = d3.scaleSqrt()
+            .domain([0, 5])
+            .range([0 * scaleBubblesS, 25 * scaleBubblesS])
         svg
             .style("width", '100%')
             .style("height", '100%')
 
         svg.attr('viewbox', `0 0 ${dimensions.width} ${dimensions.height}`)
-        console.log(dataSingleWords)
-        const simulation = forceSimulation(cleanEntries)
-            .force("charge", forceManyBody().strength(10))
-            .force("collide", forceCollide().radius(d => {
-                return scaleL(d['amount'])
+
+        const xCenter = [dimensions.width / 4, dimensions.width - dimensions.width / 4]
+
+        const simulation = forceSimulation(data)
+            .force("charge", forceManyBody().strength(20))
+            .force('x', choice === 'sentiment' ? d3.forceX().x(d => {
+                if(choice === 'sentiment') {
+                    return d['category'] === 0 ? xCenter[0] : xCenter[1]    
+                }}) : null 
+            )
+            .force("collide", forceCollide().radius(node => {
+                if(choice === 'sentiment') {
+                    return scaleLS(Math.abs(Number(node['sentiment'])))
+                } else return scaleL(node['amount'])
             }))
+
             .force('center', forceCenter(dimensions.width / 2, dimensions.height  / 2))
             .on('tick', () => {
                 
             svg
                 .selectAll('.node')
-                .data(cleanEntries)
+                .data(data)
                 .join('circle')
                 .attr('class', 'node')
                 .attr('r', node => {
-                    return scaleL(node['amount'])
+                    if(choice === 'sentiment') {
+                        return scaleLS(Math.abs(Number(node['sentiment'])))
+                    } else return scaleL(node['amount'])
                 })
                 .style('fill', node => {
-                    return colorScale(node['amount'])
+                    if(choice === 'sentiment') {
+                        return colorScaleS(node['sentiment'])
+                    }else return colorScale(node['amount'])
                 })
                 .attr('cx', node => node.x)
                 .attr('cy', node => node.y)
@@ -183,12 +264,14 @@ function Bubblechart({ data, dataSingleWords }) {
                 })
             svg
                 .selectAll('.label')
-                .data(cleanEntries)
+                .data(data)
                 .join('text')
                 .attr('class', 'label')
                 .attr('text-anchor', 'middle')
                 .attr('font-size', node => {
-                    return scaleL(node['amount']) / 3
+                    if(choice === 'sentiment') {
+                        return scaleLS(Math.abs(node['sentiment'])) / 3
+                    } else return scaleL(node['amount']) / 3
                 })
                 .attr('font-family', 'Open Sans')
                 .style('fill', 'black')
@@ -202,12 +285,20 @@ function Bubblechart({ data, dataSingleWords }) {
                     mouseEnter(value)
                 })
         })
-            
-    }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues])
+
+    }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count])
+
+    const handleChange = (e) => {
+        e.preventDefault()
+        updateChoice(e.target.value)
+    }
 
     return (
         <div ref={wrapperRef} className="bubblechart">
-            <h4>Most used keywords:</h4>
+            <div className="select-menue">
+                <button className="difficulty_select selected" value="keywords" id="beginner_button" onClick={e=> handleChange(e)}>Keywords</button>
+                <button className="difficulty_select" value="sentiment" id="intermediate_button" onClick={e=> handleChange(e)}>Compare Sentiments</button>
+            </div>
             <svg ref={svgRef}>
 
             </svg>
