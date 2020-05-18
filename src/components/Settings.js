@@ -161,14 +161,41 @@ const cleanComments = (comments) => {
 
 const getVideoTitle = async (ID) => {
     if(ID && ID !== undefined) {
-        let url = `https://www.googleapis.com/youtube/v3/videos?id=${ID}&key=${apiKey}&part=snippet`
+        let url = `https://noembed.com/embed?url=https%3A%2F%2Fhttps://www.youtube.com/watch?v=${ID}`
         const response = await fetch(url)   
         const data = await response.json()
-        const title = await data['items'][0]['snippet']['title']  
+        const title = await data['title']
         return title
     }
 
     return null
+}
+
+
+const getUserCountries = async (snippet) => {
+    const userIDs = []
+
+    for(let snip of snippet) {
+        userIDs.push(snip[2])
+    }
+
+    const countries = []
+
+    for(let ID of userIDs) {
+        let URL = `https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(snippet(country))&id=${ID}&key=${apiKey}`
+        let response = await fetch(URL)
+        const data = await response.json()
+        const snippet = await data['items']['0']['snippet']
+
+        if(snippet['country'] !== undefined) {
+            const country = snippet['country']
+            const obj = {}
+            obj['country'] = country
+            obj['id'] = ID
+            countries.push(obj)
+        }
+    }
+    return countries
 }
 
 function Settings() {
@@ -197,10 +224,15 @@ function Settings() {
         let comments = await getComments()
         if(comments.length === 0) return
         comments = comments.flat()
+        
         dispatch(setComments(comments))
+        console.log(comments)
+        //const countries = await getUserCountries(comments)
+        //console.log(countries)
 
         // Extract comments from [comment, likes]
         let cleanedComments = cleanComments(comments)
+        console.log(cleanedComments)
         let commentCount = cleanedComments.length
         dispatch(setCommentCount(commentCount))
 
@@ -254,7 +286,11 @@ function Settings() {
 
             // Else put the text and the likecount (not used yet) into an array
             text = text.map(comment => {
-                return [comment['snippet']['topLevelComment']['snippet']['textDisplay'], comment['snippet']['topLevelComment']['snippet']['likeCount']]
+                return [
+                    comment['snippet']['topLevelComment']['snippet']['textDisplay'],
+                    comment['snippet']['topLevelComment']['snippet']['likeCount'],
+                    comment['snippet']['topLevelComment']['snippet']['authorChannelId']['value']
+                ]
             })
 
             // Push data to array that is passed along

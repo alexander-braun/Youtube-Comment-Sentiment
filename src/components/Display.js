@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import Bubblechart from './Bubblechart'
 import MaxComments from './MaxComments'
-import AverageSentiment from './AverageSentiment'
 import TitleStats from './TitleStats'
 
 function Display() {

@@ -34,9 +34,7 @@ function Bubblechart({ data, dataSingleWords }) {
         let newEntries = []
         for(let i = scoreValues.length; i > 0; i--) {
             newEntries.push(...entries.filter(arr => {
-                if(arr[1] === scoreValues[i]) {
-                    return arr
-                }
+                return arr[1] === scoreValues[i] && arr
             }))
             if(newEntries.length >= scoreCount) break
         }
@@ -66,6 +64,7 @@ function Bubblechart({ data, dataSingleWords }) {
 
     let bubbles2Count = 15
     if(dimensions && dimensions.width <= 700) bubbles2Count = 10
+
     let count = 0
 
     for(let key of keys) {
@@ -90,6 +89,7 @@ function Bubblechart({ data, dataSingleWords }) {
     // Gets the minValue and maxValue of word counts
     let minValue
     let maxValue
+    
     if(dataChoice().length !== 0) {
         let minMaxNumbers = []
         for(let entry of dataChoice()) {
@@ -102,8 +102,8 @@ function Bubblechart({ data, dataSingleWords }) {
     useEffect(() => {
 
         let data = dataChoice()
-
         if(!dimensions) return
+
         const svg = select(svgRef.current)
         const mouseEnter = (value) => {
             svg
@@ -229,61 +229,60 @@ function Bubblechart({ data, dataSingleWords }) {
                     return d['category'] === 0 ? xCenter[0] : xCenter[1]    
                 }}) : null 
             )
+            .force('center', forceCenter(dimensions.width / 2, dimensions.height  / 2))
             .force("collide", forceCollide().radius(node => {
                 if(choice === 'sentiment') {
                     return scaleLS(Math.abs(Number(node['sentiment'])))
                 } else return scaleL(node['amount'])
             }))
-
-            .force('center', forceCenter(dimensions.width / 2, dimensions.height  / 2))
             .on('tick', () => {
-                
-            svg
-                .selectAll('.node')
-                .data(data)
-                .join('circle')
-                .attr('class', 'node')
-                .attr('r', node => {
-                    if(choice === 'sentiment') {
-                        return scaleLS(Math.abs(Number(node['sentiment'])))
-                    } else return scaleL(node['amount'])
-                })
-                .style('fill', node => {
-                    if(choice === 'sentiment') {
-                        return colorScaleS(node['sentiment'])
-                    }else return colorScale(node['amount'])
-                })
-                .attr('cx', node => node.x)
-                .attr('cy', node => node.y)
-                .on("mouseleave", () => {
-                    svg.selectAll(".tooltip").remove()
-                    svg.selectAll('.rec').remove()
-                })
-                .on("mouseenter", (value) => {
-                    mouseEnter(value)
-                })
-            svg
-                .selectAll('.label')
-                .data(data)
-                .join('text')
-                .attr('class', 'label')
-                .attr('text-anchor', 'middle')
-                .attr('font-size', node => {
-                    if(choice === 'sentiment') {
-                        return scaleLS(Math.abs(node['sentiment'])) / 3
-                    } else return scaleL(node['amount']) / 3
-                })
-                .attr('font-family', 'Open Sans')
-                .style('fill', 'black')
-                .attr('font-weight', '600')
-                .text(node => {
-                    return node['word']
-                })
-                .attr('x', node => node.x)
-                .attr('y', node => node.y)
-                .on("mouseenter", (value) => {
-                    mouseEnter(value)
-                })
+                svg
+                    .selectAll('.node')
+                    .data(data)
+                    .join('circle')
+                    .attr('class', 'node')
+                    .attr('r', node => {
+                        if(choice === 'sentiment') {
+                            return scaleLS(Math.abs(Number(node['sentiment'])))
+                        } else return scaleL(node['amount'])
+                    })
+                    .style('fill', node => {
+                        if(choice === 'sentiment') {
+                            return colorScaleS(node['sentiment'])
+                        }else return colorScale(node['amount'])
+                    })
+                    .attr('cx', node => node.x)
+                    .attr('cy', node => node.y)
+                    .on("mouseenter", (value) => {
+                        mouseEnter(value)
+                    })
+                    .on("mouseleave", () => {
+                        svg.selectAll(".tooltip").remove()
+                        svg.selectAll('.rec').remove()
+                    })
+                svg
+                    .selectAll('.label')
+                    .data(data)
+                    .join('text')
+                    .attr('class', 'label')
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', node => {
+                        if(choice === 'sentiment') {
+                            return scaleLS(Math.abs(node['sentiment'])) / 3
+                        } else return scaleL(node['amount']) / 3
+                    })
+                    .attr('font-family', 'Open Sans')
+                    .style('fill', 'black')
+                    .attr('font-weight', '600')
+                    .text(node => {
+                        return node['word']
+                    })
+                    .attr('x', node => node.x)
+                    .attr('y', node => node.y)
+                    .on("mouseenter", (value) => {
+                        mouseEnter(value)
+                    })
+
         })
 
     }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count])
@@ -291,13 +290,21 @@ function Bubblechart({ data, dataSingleWords }) {
     const handleChange = (e) => {
         e.preventDefault()
         updateChoice(e.target.value)
+        const id = e.target.id
+        const el = document.getElementById(id)
+        el.classList.add('selected')
+        if(id === 'keywords') {
+            document.getElementById('compare-sentiment').classList.remove('selected')
+        } else {
+            document.getElementById('keywords').classList.remove('selected')
+        }
     }
 
     return (
         <div ref={wrapperRef} className="bubblechart">
             <div className="select-menue">
-                <button className="difficulty_select selected" value="keywords" id="beginner_button" onClick={e=> handleChange(e)}>Keywords</button>
-                <button className="difficulty_select" value="sentiment" id="intermediate_button" onClick={e=> handleChange(e)}>Compare Sentiments</button>
+                <button className="difficulty_select selected" value="keywords" id="keywords" onClick={e=> handleChange(e)}>Keywords</button>
+                <button className="difficulty_select" value="sentiment" id="compare-sentiment" onClick={e=> handleChange(e)}>Compare Sentiments</button>
             </div>
             <svg ref={svgRef}>
 

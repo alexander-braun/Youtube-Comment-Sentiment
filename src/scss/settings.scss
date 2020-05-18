@@ -26,6 +26,31 @@ body {
 
 .select-menue {
     margin-top: 15px;
+
+    button {
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-weight: 400;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1rem;
+        width: fit-content;
+        padding: 0;
+        margin-right: 15px;
+        margin-left: 15px;
+        
+    }
+
+    button::selection {
+        outline: 1px dotted black;
+    }
+    
+    button.selected {
+        font-weight: 600;
+        -webkit-box-shadow: 0 4px 4px -2px #000000;
+        -moz-box-shadow: 0 4px 4px -2px #000000;
+        box-shadow: 0 2px 0px 0px #000000b9;
+    }
 }
 
 form {

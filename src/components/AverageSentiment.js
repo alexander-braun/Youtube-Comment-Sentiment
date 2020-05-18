@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { scaleOrdinal, scaleLinear } from "d3"
+import React from 'react'
+import { scaleLinear } from "d3"
 
 function AverageSentiment({ sentiment, sentimentCount }) {
 
