@@ -89,7 +89,7 @@ function Bubblechart({ data, dataSingleWords }) {
     // Gets the minValue and maxValue of word counts
     let minValue
     let maxValue
-    
+
     if(dataChoice().length !== 0) {
         let minMaxNumbers = []
         for(let entry of dataChoice()) {
@@ -222,70 +222,77 @@ function Bubblechart({ data, dataSingleWords }) {
 
         const xCenter = [dimensions.width / 4, dimensions.width - dimensions.width / 4]
 
-        const simulation = forceSimulation(data)
-            .force("charge", forceManyBody().strength(20))
-            .force('x', choice === 'sentiment' ? d3.forceX().x(d => {
-                if(choice === 'sentiment') {
-                    return d['category'] === 0 ? xCenter[0] : xCenter[1]    
-                }}) : null 
-            )
-            .force('center', forceCenter(dimensions.width / 2, dimensions.height  / 2))
-            .force("collide", forceCollide().radius(node => {
-                if(choice === 'sentiment') {
-                    return scaleLS(Math.abs(Number(node['sentiment'])))
-                } else return scaleL(node['amount'])
-            }))
-            .on('tick', () => {
-                svg
-                    .selectAll('.node')
-                    .data(data)
-                    .join('circle')
-                    .attr('class', 'node')
-                    .attr('r', node => {
-                        if(choice === 'sentiment') {
-                            return scaleLS(Math.abs(Number(node['sentiment'])))
-                        } else return scaleL(node['amount'])
-                    })
-                    .style('fill', node => {
-                        if(choice === 'sentiment') {
-                            return colorScaleS(node['sentiment'])
-                        }else return colorScale(node['amount'])
-                    })
-                    .attr('cx', node => node.x)
-                    .attr('cy', node => node.y)
-                    .on("mouseenter", (value) => {
-                        mouseEnter(value)
-                    })
-                    .on("mouseleave", () => {
-                        svg.selectAll(".tooltip").remove()
-                        svg.selectAll('.rec').remove()
-                    })
-                svg
-                    .selectAll('.label')
-                    .data(data)
-                    .join('text')
-                    .attr('class', 'label')
-                    .attr('text-anchor', 'middle')
-                    .attr('font-size', node => {
-                        if(choice === 'sentiment') {
-                            return scaleLS(Math.abs(node['sentiment'])) / 3
-                        } else return scaleL(node['amount']) / 3
-                    })
-                    .attr('font-family', 'Open Sans')
-                    .style('fill', 'black')
-                    .attr('font-weight', '600')
-                    .text(node => {
-                        return node['word']
-                    })
-                    .attr('x', node => node.x)
-                    .attr('y', node => node.y)
-                    .on("mouseenter", (value) => {
-                        mouseEnter(value)
-                    })
+        const simulationBubbles = () => {
+            forceSimulation(data)
+                .force("charge", forceManyBody().strength(20))
+                .force('x', choice === 'sentiment' ? d3.forceX().x(d => {
+                    if(choice === 'sentiment') {
+                        return d['category'] === 0 ? xCenter[0] : xCenter[1]    
+                    }}) : null 
+                )
+                .force('center', forceCenter(dimensions.width / 2, dimensions.height  / 2))
+                .force("collide", forceCollide().radius(node => {
+                    if(choice === 'sentiment') {
+                        return scaleLS(Math.abs(Number(node['sentiment'])))
+                    } else return scaleL(node['amount'])
+                }))
+                .on('tick', () => {
+                    svg
+                        .selectAll('.node')
+                        .data(data)
+                        .join('circle')
+                        .attr('class', 'node')
+                        .attr('r', node => {
+                            if(choice === 'sentiment') {
+                                return scaleLS(Math.abs(Number(node['sentiment'])))
+                            } else return scaleL(node['amount'])
+                        })
+                        .style('fill', node => {
+                            if(choice === 'sentiment') {
+                                return colorScaleS(node['sentiment'])
+                            }else return colorScale(node['amount'])
+                        })
+                        .attr('cx', node => node.x)
+                        .attr('cy', node => node.y)
+                        .on("mouseenter", (value) => {
+                            mouseEnter(value)
+                        })
+                        .on("mouseleave", () => {
+                            svg.selectAll(".tooltip").remove()
+                            svg.selectAll('.rec').remove()
+                        })
+                    svg
+                        .selectAll('.label')
+                        .data(data)
+                        .join('text')
+                        .attr('class', 'label')
+                        .attr('text-anchor', 'middle')
+                        .attr('font-size', node => {
+                            if(choice === 'sentiment') {
+                                return scaleLS(Math.abs(node['sentiment'])) / 3
+                            } else return scaleL(node['amount']) / 3
+                        })
+                        .attr('font-family', 'Open Sans')
+                        .style('fill', 'black')
+                        .attr('font-weight', '600')
+                        .text(node => {
+                            return node['word']
+                        })
+                        .attr('x', node => node.x)
+                        .attr('y', node => node.y)
+                        .on("mouseenter", (value) => {
+                            mouseEnter(value)
+                        })
 
-        })
+            })
+        }
+
+        
+
+        simulationBubbles()
 
     }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count])
+
 
     const handleChange = (e) => {
         e.preventDefault()

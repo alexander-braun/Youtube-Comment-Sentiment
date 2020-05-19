@@ -230,9 +230,8 @@ function Settings() {
         //const countries = await getUserCountries(comments)
         //console.log(countries)
 
-        // Extract comments from [comment, likes]
+        // Extract comments from [comment, likes, id]
         let cleanedComments = cleanComments(comments)
-        console.log(cleanedComments)
         let commentCount = cleanedComments.length
         dispatch(setCommentCount(commentCount))
 
@@ -245,6 +244,7 @@ function Settings() {
         dispatch(setLowestComment(sentimentCollector[3]))
         dispatch(setLowestSingleWords(sentimentCollector[4]))
         dispatch(setHighestSingleWords(sentimentCollector[5]))
+        
         // Get and set the likes for the highest and lowest sentiment comments
         let highestLowest = findLikesForHighestAndLowestComment(sentimentCollector[2], sentimentCollector[3], comments)
         dispatch(setHighestAndLowestCommentCount(highestLowest))
