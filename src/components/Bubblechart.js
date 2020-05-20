@@ -6,9 +6,12 @@ import {
     forceCollide, 
     forceManyBody, 
     forceCenter,
-    scaleLinear } from "d3"
+    scaleLinear,
+    geoPath,
+    geoMercator } from "d3"
 import React, { useRef, useEffect, useState, useCallback } from "react"
 import useResizeObserver from './Resizeobserver'
+import geodata from './custom.geo.json'
 
 function Bubblechart({ data, dataSingleWords }) {
     const svgRef = useRef()
@@ -16,6 +19,7 @@ function Bubblechart({ data, dataSingleWords }) {
     const dimensions = useResizeObserver(wrapperRef)
     const entries = Object.entries(data)
     const alphabet = 'abcdefghijklmnopqrstuvwxyz1234567890'
+    const [selectedCountry, setSelectedCountry] = useState(null)
 
     let scoreValues = []
     const heighestXEntries = () => {
@@ -287,9 +291,39 @@ function Bubblechart({ data, dataSingleWords }) {
             })
         }
 
-        
+        const colorScaleWorld = scaleLinear().domain([0, 10]).range(['grey', 'red'])
+        const simulationWorldmap = () => {
+            const projection = geoMercator().fitSize([dimensions.width, dimensions.height], selectedCountry || geodata).precision(100)
+            const pathGenerator = geoPath().projection(projection)
+            svg
+                .selectAll('.country')
+                .data(geodata.features)
+                .join('path')
+                .on('click', feature => {
+                    setSelectedCountry(selectedCountry === feature ? null : feature)
+                })
+                .attr('class', 'country')
+                .transition()
+                .duration(1000)
+                .attr('d', feature => pathGenerator(feature))
+                .attr('fill', feature => {
+                    console.log(feature)
+                    colorScaleWorld(feature)
+                })
+            svg 
+                .selectAll('.label')
+                .data([selectedCountry])
+                .join('text')
+                .attr('class', 'label')
+                .text(feature =>
+                    feature && feature.properties.name
+                )
+                .attr('x', 10)
+                .attr('y', 25)
+        }
 
-        simulationBubbles()
+        simulationWorldmap()
+        //simulationBubbles()
 
     }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count])
 

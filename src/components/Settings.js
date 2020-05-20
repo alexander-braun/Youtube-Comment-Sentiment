@@ -23,7 +23,7 @@ var Analyzer = require('natural').SentimentAnalyzer
 var stemmer = require('natural').PorterStemmer
 var keyword_extractor = require("keyword-extractor")
 let apiKey = process.env.REACT_APP_API_KEY
-
+console.log(apiKey)
 const useStyles = makeStyles((theme) => ({
     searchIcon: {
       color: 'rgba(128, 128, 128, 0.5)',
