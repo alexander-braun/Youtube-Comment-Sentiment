@@ -5,6 +5,8 @@ import { keyCounts } from './keyCounts'
 import { comments } from './comments'
 import { highestAndLowestCommentCount } from './highestAndLowestCommentCount'
 import { singleWordSentiments } from './singleWordSentiments'
+import { countries } from './countries'
+import { choice } from './choice'
 
 export default combineReducers({
     videoTitle,
@@ -12,5 +14,7 @@ export default combineReducers({
     keyCounts,
     comments,
     highestAndLowestCommentCount,
-    singleWordSentiments
+    singleWordSentiments,
+    countries,
+    choice
 })

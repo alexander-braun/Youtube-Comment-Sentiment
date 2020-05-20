@@ -326,4 +326,10 @@ h2 {
   align-items: center;
   justify-content: center;
 }
+
+.country:hover {
+  stroke: black;
+  stroke-width: 1px;
+  cursor: pointer;
+}
 /*# sourceMappingURL=settings.css.map */

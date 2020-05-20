@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import '../styles/settings.css'
 
 import SearchIcon from '@material-ui/icons/Search'
@@ -18,12 +18,13 @@ import { setVideoTitle } from '../actions/setVideoTitle'
 import { setComments } from '../actions/setComments'
 import { setHighestAndLowestCommentCount } from '../actions/setHighestAndLowestCommentCount'
 import { setHighestSingleWords, setLowestSingleWords } from '../actions/setSingleWordSentiments'
+import { setCountries } from '../actions/setCountries'
 
 var Analyzer = require('natural').SentimentAnalyzer
 var stemmer = require('natural').PorterStemmer
 var keyword_extractor = require("keyword-extractor")
 let apiKey = process.env.REACT_APP_API_KEY
-console.log(apiKey)
+
 const useStyles = makeStyles((theme) => ({
     searchIcon: {
       color: 'rgba(128, 128, 128, 0.5)',
@@ -171,39 +172,13 @@ const getVideoTitle = async (ID) => {
     return null
 }
 
-
-const getUserCountries = async (snippet) => {
-    const userIDs = []
-
-    for(let snip of snippet) {
-        userIDs.push(snip[2])
-    }
-
-    const countries = []
-
-    for(let ID of userIDs) {
-        let URL = `https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(snippet(country))&id=${ID}&key=${apiKey}`
-        let response = await fetch(URL)
-        const data = await response.json()
-        const snippet = await data['items']['0']['snippet']
-
-        if(snippet['country'] !== undefined) {
-            const country = snippet['country']
-            const obj = {}
-            obj['country'] = country
-            obj['id'] = ID
-            countries.push(obj)
-        }
-    }
-    return countries
-}
-
 function Settings() {
 
     const [videoLink, updateVideoLink] = useState('')
     const [videoID, updateVideoID] = useState()
 
     const dispatch = useDispatch()
+    const choice = useSelector(state => state.choice)
 
     useEffect(() => {
         // Get and Update Video ID
@@ -224,11 +199,7 @@ function Settings() {
         let comments = await getComments()
         if(comments.length === 0) return
         comments = comments.flat()
-        
         dispatch(setComments(comments))
-        console.log(comments)
-        //const countries = await getUserCountries(comments)
-        //console.log(countries)
 
         // Extract comments from [comment, likes, id]
         let cleanedComments = cleanComments(comments)
@@ -259,6 +230,7 @@ function Settings() {
         let ID = videoID
         let maxResults = 100
         let maxSearchLength = 10
+        let analyzer = new Analyzer("English", stemmer, "afinn")
         
         async function fetchComments(textArr = [], token) {
 
@@ -281,15 +253,18 @@ function Settings() {
             const nextPageToken = await data['nextPageToken']
             let text = await data['items']
 
+
             // If the address was f.e. empty and there are no results just return []
             if(!text) return []
 
             // Else put the text and the likecount (not used yet) into an array
             text = text.map(comment => {
+                const splitcomment = comment['snippet']['topLevelComment']['snippet']['textDisplay'].split(' ')
                 return [
                     comment['snippet']['topLevelComment']['snippet']['textDisplay'],
                     comment['snippet']['topLevelComment']['snippet']['likeCount'],
-                    comment['snippet']['topLevelComment']['snippet']['authorChannelId']['value']
+                    comment['snippet']['topLevelComment']['snippet']['authorChannelId']['value'],
+                    analyzer.getSentiment(splitcomment)
                 ]
             })
 

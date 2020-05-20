@@ -340,3 +340,14 @@ h2 {
 @media only screen and (min-width: 1300px) {
 
 }
+
+
+.country {
+    
+}
+
+.country:hover {
+    stroke: black;
+    stroke-width: 1px;
+    cursor: pointer;
+  }

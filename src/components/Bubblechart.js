@@ -12,6 +12,67 @@ import {
 import React, { useRef, useEffect, useState, useCallback } from "react"
 import useResizeObserver from './Resizeobserver'
 import geodata from './custom.geo.json'
+import { useSelector, useDispatch } from 'react-redux'
+import { setChoice } from '../actions/setChoice'
+import { setCountries } from '../actions/setCountries'
+let apiKey = process.env.REACT_APP_API_KEY
+
+
+const getUserCountries = async (snippet) => {
+    if(!snippet) return
+    const userIDs = []
+
+    for(let snip of snippet) {
+        userIDs.push(snip[2])
+    }
+
+    const countries = []
+
+    for(let ID of userIDs) {
+        let URL = `https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(snippet(country))&id=${ID}&key=${apiKey}`
+        let response = await fetch(URL)
+        const data = await response.json()
+        const snippet = await data['items']['0']['snippet']
+
+        if(snippet['country'] !== undefined) {
+            const country = snippet['country']
+            const obj = {}
+            obj['country'] = country
+            obj['id'] = ID
+            countries.push(obj)
+        }
+    }
+    return countries
+}
+
+const findCountriesAverageSentiment = (countries, comments) => {
+    let countriesSentiment = []
+    for(let country of countries) {
+        for(let comment of comments) {
+            if(country['id'] === comment[2]) {
+                let obj = {}
+                obj['id'] = country['id']
+                obj['country'] = country['country']
+                obj['sentiment'] = comment[3]
+                obj['comment'] = comment[0]
+                countriesSentiment.push(obj)
+            }
+        }
+    }
+
+    let sentiments = {}
+    for(let country of countriesSentiment) {
+        !sentiments[country['country']] && (sentiments[country['country']] = [])
+        sentiments[country['country']].push(country['sentiment'])
+    }
+
+    const averageSentiments = {}
+    Object.keys(sentiments).map(key => {
+        return averageSentiments[key] = [sentiments[key].reduce((a, b) => a + b) / sentiments[key].length, sentiments[key].length]
+    })
+
+    return averageSentiments
+}
 
 function Bubblechart({ data, dataSingleWords }) {
     const svgRef = useRef()
@@ -20,6 +81,9 @@ function Bubblechart({ data, dataSingleWords }) {
     const entries = Object.entries(data)
     const alphabet = 'abcdefghijklmnopqrstuvwxyz1234567890'
     const [selectedCountry, setSelectedCountry] = useState(null)
+    const comments = useSelector(state => state.comments)
+    const countries = useSelector(state => state.countries)
+    const dispatch = useDispatch()
 
     let scoreValues = []
     const heighestXEntries = () => {
@@ -101,6 +165,12 @@ function Bubblechart({ data, dataSingleWords }) {
         }
         minValue = d3.min(minMaxNumbers)
         maxValue = d3.max(minMaxNumbers)
+    }
+    
+    const userCountries = async () => {
+        const countries = await getUserCountries(comments)
+        const averageCountriesSentiment = await findCountriesAverageSentiment(countries, comments)
+        dispatch(setCountries(averageCountriesSentiment))
     }
 
     useEffect(() => {
@@ -291,7 +361,7 @@ function Bubblechart({ data, dataSingleWords }) {
             })
         }
 
-        const colorScaleWorld = scaleLinear().domain([0, 10]).range(['grey', 'red'])
+        /*
         const simulationWorldmap = () => {
             const projection = geoMercator().fitSize([dimensions.width, dimensions.height], selectedCountry || geodata).precision(100)
             const pathGenerator = geoPath().projection(projection)
@@ -307,30 +377,52 @@ function Bubblechart({ data, dataSingleWords }) {
                 .duration(1000)
                 .attr('d', feature => pathGenerator(feature))
                 .attr('fill', feature => {
-                    console.log(feature)
-                    colorScaleWorld(feature)
+                    for(let key of Object.keys(countries)) {
+                        if(feature['properties']['iso_a2'] === key) {
+                            if(countries[key][0] > 0) {
+                                return 'green'
+                            } else if(countries[key][0] === 0) {
+                                return 'grey'
+                            } else return 'red'
+                        }
+                    }
+                    return 'lightgrey'
                 })
             svg 
                 .selectAll('.label')
                 .data([selectedCountry])
                 .join('text')
                 .attr('class', 'label')
-                .text(feature =>
-                    feature && feature.properties.name
+                .text(feature => {
+                        for(let key of Object.keys(countries)) {
+                            if(feature && feature['properties']['iso_a2'] === key) {
+                                return (countries[key].reduce((a, b) => a + b) / countries[key].length) + feature && feature.properties.name
+                            }
+                        }
+                        return feature && feature.properties.name
+                    }
                 )
                 .attr('x', 10)
                 .attr('y', 25)
         }
+        */
+        if(choice !== 'countries') {
+            simulationBubbles()
+        }
+        else if(choice === 'countries') {
+            //userCountries()
+            //simulationWorldmap()
+        }
 
-        simulationWorldmap()
-        //simulationBubbles()
-
-    }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count])
+    }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count, countries, selectedCountry])
 
 
     const handleChange = (e) => {
         e.preventDefault()
         updateChoice(e.target.value)
+
+        dispatch(setChoice(e.target.value))
+
         const id = e.target.id
         const el = document.getElementById(id)
         el.classList.add('selected')
@@ -346,6 +438,7 @@ function Bubblechart({ data, dataSingleWords }) {
             <div className="select-menue">
                 <button className="difficulty_select selected" value="keywords" id="keywords" onClick={e=> handleChange(e)}>Keywords</button>
                 <button className="difficulty_select" value="sentiment" id="compare-sentiment" onClick={e=> handleChange(e)}>Compare Sentiments</button>
+                <button className="difficulty_select" value="countries" id="compare-sentiment" onClick={e=> handleChange(e)}>Per Country</button>
             </div>
             <svg ref={svgRef}>
 
