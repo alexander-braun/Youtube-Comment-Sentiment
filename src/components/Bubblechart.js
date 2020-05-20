@@ -20,22 +20,22 @@ let apiKey = process.env.REACT_APP_API_KEY
 
 const getUserCountries = async (snippet) => {
     if(!snippet) return
-    const userIDs = []
 
+    const userIDs = []
     for(let snip of snippet) {
         userIDs.push(snip[2])
     }
 
     const countries = []
-
     for(let ID of userIDs) {
         let URL = `https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(snippet(country))&id=${ID}&key=${apiKey}`
         let response = await fetch(URL)
         const data = await response.json()
-        const snippet = await data['items']['0']['snippet']
+        if(data['items'] === undefined) return
+        const snip = await data['items']['0']['snippet']
 
-        if(snippet['country'] !== undefined) {
-            const country = snippet['country']
+        if(snip['country'] !== undefined) {
+            const country = snip['country']
             const obj = {}
             obj['country'] = country
             obj['id'] = ID
@@ -46,6 +46,7 @@ const getUserCountries = async (snippet) => {
 }
 
 const findCountriesAverageSentiment = (countries, comments) => {
+    if(!countries || !comments) return
     let countriesSentiment = []
     for(let country of countries) {
         for(let comment of comments) {
@@ -166,19 +167,21 @@ function Bubblechart({ data, dataSingleWords }) {
         minValue = d3.min(minMaxNumbers)
         maxValue = d3.max(minMaxNumbers)
     }
-    
-    const userCountries = async () => {
+
+    const userCountries = useCallback(async () => {
         const countries = await getUserCountries(comments)
         const averageCountriesSentiment = await findCountriesAverageSentiment(countries, comments)
+        if(!averageCountriesSentiment) return
         dispatch(setCountries(averageCountriesSentiment))
-    }
+    }, [comments, dispatch])
 
     useEffect(() => {
 
         let data = dataChoice()
         if(!dimensions) return
+        let svg = null
+        svg = select(svgRef.current)
 
-        const svg = select(svgRef.current)
         const mouseEnter = (value) => {
             svg
                 .selectAll('.rec')
@@ -297,6 +300,7 @@ function Bubblechart({ data, dataSingleWords }) {
         const xCenter = [dimensions.width / 4, dimensions.width - dimensions.width / 4]
 
         const simulationBubbles = () => {
+            if(choice === 'countries') return
             forceSimulation(data)
                 .force("charge", forceManyBody().strength(20))
                 .force('x', choice === 'sentiment' ? d3.forceX().x(d => {
@@ -311,6 +315,9 @@ function Bubblechart({ data, dataSingleWords }) {
                     } else return scaleL(node['amount'])
                 }))
                 .on('tick', () => {
+                    svg 
+                        .selectAll('.country').remove()
+                        .selectAll('.label2').remove()
                     svg
                         .selectAll('.node')
                         .data(data)
@@ -363,8 +370,13 @@ function Bubblechart({ data, dataSingleWords }) {
 
         /*
         const simulationWorldmap = () => {
+            if(choice !== 'countries') return
             const projection = geoMercator().fitSize([dimensions.width, dimensions.height], selectedCountry || geodata).precision(100)
             const pathGenerator = geoPath().projection(projection)
+            svg 
+                .selectAll('.label').remove()
+                .selectAll('.node').remove()
+                .selectAll('.rect').remove()
             svg
                 .selectAll('.country')
                 .data(geodata.features)
@@ -389,10 +401,10 @@ function Bubblechart({ data, dataSingleWords }) {
                     return 'lightgrey'
                 })
             svg 
-                .selectAll('.label')
+                .selectAll('.label2')
                 .data([selectedCountry])
                 .join('text')
-                .attr('class', 'label')
+                .attr('class', 'label2')
                 .text(feature => {
                         for(let key of Object.keys(countries)) {
                             if(feature && feature['properties']['iso_a2'] === key) {
@@ -414,7 +426,7 @@ function Bubblechart({ data, dataSingleWords }) {
             //simulationWorldmap()
         }
 
-    }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count, countries, selectedCountry])
+    }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count, countries, selectedCountry, userCountries])
 
 
     const handleChange = (e) => {
@@ -426,10 +438,16 @@ function Bubblechart({ data, dataSingleWords }) {
         const id = e.target.id
         const el = document.getElementById(id)
         el.classList.add('selected')
-        if(id === 'keywords') {
-            document.getElementById('compare-sentiment').classList.remove('selected')
-        } else {
+
+        if(id === 'countries') {
             document.getElementById('keywords').classList.remove('selected')
+            document.getElementById('compare-sentiment').classList.remove('selected')
+        } else if(id === 'compare-sentiment') {
+            document.getElementById('keywords').classList.remove('selected')
+            document.getElementById('countries').classList.remove('selected')
+        } else if(id === 'keywords') {
+            document.getElementById('countries').classList.remove('selected')
+            document.getElementById('compare-sentiment').classList.remove('selected')
         }
     }
 
@@ -438,7 +456,7 @@ function Bubblechart({ data, dataSingleWords }) {
             <div className="select-menue">
                 <button className="difficulty_select selected" value="keywords" id="keywords" onClick={e=> handleChange(e)}>Keywords</button>
                 <button className="difficulty_select" value="sentiment" id="compare-sentiment" onClick={e=> handleChange(e)}>Compare Sentiments</button>
-                <button className="difficulty_select" value="countries" id="compare-sentiment" onClick={e=> handleChange(e)}>Per Country</button>
+                {/* <button className="difficulty_select" value="countries" id="countries" onClick={e=> handleChange(e)}>Per Country</button> */}
             </div>
             <svg ref={svgRef}>
 

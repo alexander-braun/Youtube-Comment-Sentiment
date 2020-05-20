@@ -178,7 +178,6 @@ function Settings() {
     const [videoID, updateVideoID] = useState()
 
     const dispatch = useDispatch()
-    const choice = useSelector(state => state.choice)
 
     useEffect(() => {
         // Get and Update Video ID
