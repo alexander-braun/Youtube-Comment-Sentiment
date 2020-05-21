@@ -18,6 +18,7 @@ import { setCountries } from '../actions/setCountries'
 let apiKey = process.env.REACT_APP_API_KEY
 
 
+/*
 const getUserCountries = async (snippet) => {
     if(!snippet) return
 
@@ -44,6 +45,7 @@ const getUserCountries = async (snippet) => {
     }
     return countries
 }
+*/
 
 const findCountriesAverageSentiment = (countries, comments) => {
     if(!countries || !comments) return
@@ -168,12 +170,14 @@ function Bubblechart({ data, dataSingleWords }) {
         maxValue = d3.max(minMaxNumbers)
     }
 
+    /*
     const userCountries = useCallback(async () => {
         const countries = await getUserCountries(comments)
         const averageCountriesSentiment = await findCountriesAverageSentiment(countries, comments)
         if(!averageCountriesSentiment) return
         dispatch(setCountries(averageCountriesSentiment))
     }, [comments, dispatch])
+    */
 
     useEffect(() => {
 
@@ -426,7 +430,7 @@ function Bubblechart({ data, dataSingleWords }) {
             //simulationWorldmap()
         }
 
-    }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count, countries, selectedCountry, userCountries])
+    }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count, countries, selectedCountry, /*userCountries*/])
 
 
     const handleChange = (e) => {
@@ -444,9 +448,9 @@ function Bubblechart({ data, dataSingleWords }) {
             document.getElementById('compare-sentiment').classList.remove('selected')
         } else if(id === 'compare-sentiment') {
             document.getElementById('keywords').classList.remove('selected')
-            document.getElementById('countries').classList.remove('selected')
+            //document.getElementById('countries').classList.remove('selected')
         } else if(id === 'keywords') {
-            document.getElementById('countries').classList.remove('selected')
+            //document.getElementById('countries').classList.remove('selected')
             document.getElementById('compare-sentiment').classList.remove('selected')
         }
     }

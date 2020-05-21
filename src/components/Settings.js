@@ -199,6 +199,7 @@ function Settings() {
         if(comments.length === 0) return
         comments = comments.flat()
         dispatch(setComments(comments))
+        console.log(comments)
 
         // Extract comments from [comment, likes, id]
         let cleanedComments = cleanComments(comments)
@@ -259,11 +260,13 @@ function Settings() {
             // Else put the text and the likecount (not used yet) into an array
             text = text.map(comment => {
                 const splitcomment = comment['snippet']['topLevelComment']['snippet']['textDisplay'].split(' ')
+                console.log(comment)
                 return [
                     comment['snippet']['topLevelComment']['snippet']['textDisplay'],
                     comment['snippet']['topLevelComment']['snippet']['likeCount'],
                     comment['snippet']['topLevelComment']['snippet']['authorChannelId']['value'],
-                    analyzer.getSentiment(splitcomment)
+                    analyzer.getSentiment(splitcomment),
+                    comment['snippet']['topLevelComment']['snippet']['authorChannelUrl']
                 ]
             })
 
