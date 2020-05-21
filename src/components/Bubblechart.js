@@ -17,75 +17,13 @@ import { setChoice } from '../actions/setChoice'
 import { setCountries } from '../actions/setCountries'
 let apiKey = process.env.REACT_APP_API_KEY
 
-
-/*
-const getUserCountries = async (snippet) => {
-    if(!snippet) return
-
-    const userIDs = []
-    for(let snip of snippet) {
-        userIDs.push(snip[2])
-    }
-
-    const countries = []
-    for(let ID of userIDs) {
-        let URL = `https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(snippet(country))&id=${ID}&key=${apiKey}`
-        let response = await fetch(URL)
-        const data = await response.json()
-        if(data['items'] === undefined) return
-        const snip = await data['items']['0']['snippet']
-
-        if(snip['country'] !== undefined) {
-            const country = snip['country']
-            const obj = {}
-            obj['country'] = country
-            obj['id'] = ID
-            countries.push(obj)
-        }
-    }
-    return countries
-}
-*/
-
-const findCountriesAverageSentiment = (countries, comments) => {
-    if(!countries || !comments) return
-    let countriesSentiment = []
-    for(let country of countries) {
-        for(let comment of comments) {
-            if(country['id'] === comment[2]) {
-                let obj = {}
-                obj['id'] = country['id']
-                obj['country'] = country['country']
-                obj['sentiment'] = comment[3]
-                obj['comment'] = comment[0]
-                countriesSentiment.push(obj)
-            }
-        }
-    }
-
-    let sentiments = {}
-    for(let country of countriesSentiment) {
-        !sentiments[country['country']] && (sentiments[country['country']] = [])
-        sentiments[country['country']].push(country['sentiment'])
-    }
-
-    const averageSentiments = {}
-    Object.keys(sentiments).map(key => {
-        return averageSentiments[key] = [sentiments[key].reduce((a, b) => a + b) / sentiments[key].length, sentiments[key].length]
-    })
-
-    return averageSentiments
-}
-
 function Bubblechart({ data, dataSingleWords }) {
     const svgRef = useRef()
     const wrapperRef = useRef()
     const dimensions = useResizeObserver(wrapperRef)
     const entries = Object.entries(data)
     const alphabet = 'abcdefghijklmnopqrstuvwxyz1234567890'
-    const [selectedCountry, setSelectedCountry] = useState(null)
     const comments = useSelector(state => state.comments)
-    const countries = useSelector(state => state.countries)
     const dispatch = useDispatch()
 
     let scoreValues = []
@@ -169,15 +107,6 @@ function Bubblechart({ data, dataSingleWords }) {
         minValue = d3.min(minMaxNumbers)
         maxValue = d3.max(minMaxNumbers)
     }
-
-    /*
-    const userCountries = useCallback(async () => {
-        const countries = await getUserCountries(comments)
-        const averageCountriesSentiment = await findCountriesAverageSentiment(countries, comments)
-        if(!averageCountriesSentiment) return
-        dispatch(setCountries(averageCountriesSentiment))
-    }, [comments, dispatch])
-    */
 
     useEffect(() => {
 
@@ -372,65 +301,9 @@ function Bubblechart({ data, dataSingleWords }) {
             })
         }
 
-        /*
-        const simulationWorldmap = () => {
-            if(choice !== 'countries') return
-            const projection = geoMercator().fitSize([dimensions.width, dimensions.height], selectedCountry || geodata).precision(100)
-            const pathGenerator = geoPath().projection(projection)
-            svg 
-                .selectAll('.label').remove()
-                .selectAll('.node').remove()
-                .selectAll('.rect').remove()
-            svg
-                .selectAll('.country')
-                .data(geodata.features)
-                .join('path')
-                .on('click', feature => {
-                    setSelectedCountry(selectedCountry === feature ? null : feature)
-                })
-                .attr('class', 'country')
-                .transition()
-                .duration(1000)
-                .attr('d', feature => pathGenerator(feature))
-                .attr('fill', feature => {
-                    for(let key of Object.keys(countries)) {
-                        if(feature['properties']['iso_a2'] === key) {
-                            if(countries[key][0] > 0) {
-                                return 'green'
-                            } else if(countries[key][0] === 0) {
-                                return 'grey'
-                            } else return 'red'
-                        }
-                    }
-                    return 'lightgrey'
-                })
-            svg 
-                .selectAll('.label2')
-                .data([selectedCountry])
-                .join('text')
-                .attr('class', 'label2')
-                .text(feature => {
-                        for(let key of Object.keys(countries)) {
-                            if(feature && feature['properties']['iso_a2'] === key) {
-                                return (countries[key].reduce((a, b) => a + b) / countries[key].length) + feature && feature.properties.name
-                            }
-                        }
-                        return feature && feature.properties.name
-                    }
-                )
-                .attr('x', 10)
-                .attr('y', 25)
-        }
-        */
-        if(choice !== 'countries') {
-            simulationBubbles()
-        }
-        else if(choice === 'countries') {
-            //userCountries()
-            //simulationWorldmap()
-        }
+        simulationBubbles()
 
-    }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count, countries, selectedCountry, /*userCountries*/])
+    }, [dimensions, cleanEntries, data, maxValue, minValue, scoreValues, dataChoice, choice, bubbles2Count])
 
 
     const handleChange = (e) => {

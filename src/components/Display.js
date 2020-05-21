@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import Bubblechart from './Bubblechart'
 import MaxComments from './MaxComments'
 import TitleStats from './TitleStats'
+import InfiniteScrollWindow from './InfiniteScrollWindow'
 
 function Display() {
 
@@ -25,6 +26,7 @@ function Display() {
                 highestComment={highestComment} 
                 sentiment={sentiment} />
             <Bubblechart data={keyCounts} dataSingleWords={singleWordSentiments}/>
+            <InfiniteScrollWindow />
         </div>
     )
 }
