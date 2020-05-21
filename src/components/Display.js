@@ -24,9 +24,10 @@ function Display() {
                 sentimentCount={sentimentCount} 
                 lowestComment={lowestComment} 
                 highestComment={highestComment} 
-                sentiment={sentiment} />
-            <Bubblechart data={keyCounts} dataSingleWords={singleWordSentiments}/>
+                sentiment={sentiment} 
+            />
             <InfiniteScrollWindow />
+            <Bubblechart data={keyCounts} dataSingleWords={singleWordSentiments}/>
         </div>
     )
 }

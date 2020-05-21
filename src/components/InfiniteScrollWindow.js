@@ -1,5 +1,5 @@
-import React, { useState, Fragment } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, Fragment, useEffect } from 'react'
+import { useSelector} from 'react-redux'
 import { v4 as uuidv4 } from 'uuid';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -48,17 +48,25 @@ const filterComments = (comments) => {
 
 function InfiniteScrollWindow() {
 
-    const comments = useSelector(state => state.comments)
+    let comments = useSelector(state => state.comments)
+    let [commentsFiltered, setCommentsFiltered] = useState()
+    let [positiveComments, setPositiveComments] = useState()
+    let [negativeComments, setNegativeComments] = useState()
+
+    useEffect(() => {
+        setCommentsFiltered(filterComments(comments))
+    }, [comments])
+
+    useEffect(() => {
+        commentsFiltered && setPositiveComments(commentsFiltered[0].slice(0, 10))
+        commentsFiltered && setNegativeComments(commentsFiltered[1].slice(0, 10))
+    }, [commentsFiltered])
+
     const [hasmoreItems, setHasmoreItems] = useState(true)
-    const commentsFiltered = filterComments(comments)
-
-    let [positiveComments, setPositiveComments] = useState(commentsFiltered[0].slice(0, 10))
-    let [negativeComments, setNegativeComments] = useState(commentsFiltered[1].slice(0, 10))
-
+    
     const loadMorePositive = () => {
         let count = positiveComments.length + 5
         if(count >= commentsFiltered[0].length) {
-            console.log('setState')
             setHasmoreItems(false)
             return
         }
@@ -68,13 +76,13 @@ function InfiniteScrollWindow() {
     const loadMoreNegative = () => {
         let count = negativeComments.length + 5
         if(count >= commentsFiltered[1].length) {
-            console.log('setState')
             setHasmoreItems(false)
             return
         }
         setNegativeComments(commentsFiltered[1].slice(0, count))
     }
 
+    if(!positiveComments || !negativeComments) return null
     return (
         <div className="infinite-wrapper">
             <div className="infiniteScroll">
@@ -91,8 +99,8 @@ function InfiniteScrollWindow() {
                         positiveComments && positiveComments.map(comment => {
                             return (
                                 <div className="comment-infinite-wrapper" key={uuidv4()}>
-                                    <div>{comment[0]}</div>
-                                    <div>{comment[3].toString().slice(0, 6)}</div>
+                                    <div className="comment-text">{`"${comment[0]}"`}</div>
+                                    <div className="comment-sentiment">{comment[3].toString().slice(0, 6)}</div>
                                 </div>
                             )
                         })
@@ -113,8 +121,8 @@ function InfiniteScrollWindow() {
                         negativeComments && negativeComments.map(comment => {
                             return (
                                 <div className="comment-infinite-wrapper" key={uuidv4()}>
-                                    <div>{comment[0]}</div>
-                                    <div>{comment[3].toString().slice(0, 6)}</div>
+                                    <div className="comment-text">{`"${comment[0]}"`}</div>
+                                    <div className="comment-sentiment">{comment[3].toString().slice(0, 6)}</div>
                                 </div>
                             )
                         })
