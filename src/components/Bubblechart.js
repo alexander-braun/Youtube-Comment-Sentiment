@@ -6,16 +6,11 @@ import {
     forceCollide, 
     forceManyBody, 
     forceCenter,
-    scaleLinear,
-    geoPath,
-    geoMercator } from "d3"
+    scaleLinear } from "d3"
 import React, { useRef, useEffect, useState, useCallback } from "react"
 import useResizeObserver from './Resizeobserver'
-import geodata from './custom.geo.json'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setChoice } from '../actions/setChoice'
-import { setCountries } from '../actions/setCountries'
-let apiKey = process.env.REACT_APP_API_KEY
 
 function Bubblechart({ data, dataSingleWords }) {
     const svgRef = useRef()
@@ -23,7 +18,6 @@ function Bubblechart({ data, dataSingleWords }) {
     const dimensions = useResizeObserver(wrapperRef)
     const entries = Object.entries(data)
     const alphabet = 'abcdefghijklmnopqrstuvwxyz1234567890'
-    const comments = useSelector(state => state.comments)
     const dispatch = useDispatch()
 
     let scoreValues = []

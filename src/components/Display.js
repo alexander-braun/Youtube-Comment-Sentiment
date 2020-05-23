@@ -13,7 +13,6 @@ function Display() {
     const lowestComment = useSelector(state => state.sentiment.lowestComment)
     const videoTitle = useSelector(state => state.videoTitle)
     const keyCounts = useSelector(state => state.keyCounts)
-    const commentCount = useSelector(state => state.sentiment.commentCount)
     const singleWordSentiments = useSelector(state => state.singleWordSentiments)
 
     if(!sentiment) return null

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import '../styles/settings.css'
-
 import SearchIcon from '@material-ui/icons/Search'
 import { makeStyles } from '@material-ui/core/styles'
-
+import { setKeycounts } from '../actions/setKeycounts'
+import { setVideoTitle } from '../actions/setVideoTitle'
+import { setComments } from '../actions/setComments'
+import { setHighestAndLowestCommentCount } from '../actions/setHighestAndLowestCommentCount'
+import { setHighestSingleWords, setLowestSingleWords } from '../actions/setSingleWordSentiments'
 import { 
     setSentiment, 
     setSentimentCount, 
@@ -12,13 +15,6 @@ import {
     setLowestComment, 
     setCommentCount
 } from '../actions/setSentiments'
-
-import { setKeycounts } from '../actions/setKeycounts'
-import { setVideoTitle } from '../actions/setVideoTitle'
-import { setComments } from '../actions/setComments'
-import { setHighestAndLowestCommentCount } from '../actions/setHighestAndLowestCommentCount'
-import { setHighestSingleWords, setLowestSingleWords } from '../actions/setSingleWordSentiments'
-import { setCountries } from '../actions/setCountries'
 
 var Analyzer = require('natural').SentimentAnalyzer
 var stemmer = require('natural').PorterStemmer
@@ -125,6 +121,7 @@ const overallSentiment = (comments) => {
                 highWords.push(obj)
             }
         }
+        
         // Get the whole comments sentiment from here on
         const sentiment = parseFloat(analyzer.getSentiment(tokenized))
 
