@@ -150,7 +150,8 @@ function Bubblechart({ data, dataSingleWords }) {
                     if(choice !== 'sentiment') {
                         return colorScale(node[0])
                     } else {
-                        return colorScaleS(Math.abs(node[0]))
+                        console.log(node)
+                        return colorScaleS(node[0])
                     }
                 })
                 .style('stroke-width', 2)
@@ -242,9 +243,6 @@ function Bubblechart({ data, dataSingleWords }) {
                     } else return scaleL(node['amount'])
                 }))
                 .on('tick', () => {
-                    svg 
-                        .selectAll('.country').remove()
-                        .selectAll('.label2').remove()
                     svg
                         .selectAll('.node')
                         .data(data)
