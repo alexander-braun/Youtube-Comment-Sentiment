@@ -1,0 +1,35 @@
+.bubblechart {
+  width: 95%;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 15px;
+  margin-bottom: 10vh;
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+}
+
+.bubblechart__select-menue {
+  margin-top: 15px;
+}
+
+.bubblechart__difficulty-select {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-weight: 400;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.5rem;
+  width: fit-content;
+  padding: 0;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+.bubblechart__difficulty-select--selected {
+  font-weight: 600;
+  box-shadow: 0 2px 0px 0px #000000b9;
+}
+/*# sourceMappingURL=bubblechart.css.map */

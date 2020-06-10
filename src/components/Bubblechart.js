@@ -11,6 +11,7 @@ import React, { useRef, useEffect, useState, useCallback } from "react"
 import useResizeObserver from './Resizeobserver'
 import { useDispatch } from 'react-redux'
 import { setChoice } from '../actions/setChoice'
+import '../styles/bubblechart.css'
 
 function Bubblechart({ data, dataSingleWords }) {
     const svgRef = useRef()
@@ -150,7 +151,6 @@ function Bubblechart({ data, dataSingleWords }) {
                     if(choice !== 'sentiment') {
                         return colorScale(node[0])
                     } else {
-                        console.log(node)
                         return colorScaleS(node[0])
                     }
                 })
@@ -306,25 +306,25 @@ function Bubblechart({ data, dataSingleWords }) {
 
         const id = e.target.id
         const el = document.getElementById(id)
-        el.classList.add('selected')
+        el.classList.add('bubblechart__difficulty-select--selected')
 
         if(id === 'countries') {
-            document.getElementById('keywords').classList.remove('selected')
-            document.getElementById('compare-sentiment').classList.remove('selected')
+            document.getElementById('keywords').classList.remove('bubblechart__difficulty-select--selected')
+            document.getElementById('compare-sentiment').classList.remove('bubblechart__difficulty-select--selected')
         } else if(id === 'compare-sentiment') {
-            document.getElementById('keywords').classList.remove('selected')
+            document.getElementById('keywords').classList.remove('bubblechart__difficulty-select--selected')
             //document.getElementById('countries').classList.remove('selected')
         } else if(id === 'keywords') {
             //document.getElementById('countries').classList.remove('selected')
-            document.getElementById('compare-sentiment').classList.remove('selected')
+            document.getElementById('compare-sentiment').classList.remove('bubblechart__difficulty-select--selected')
         }
     }
 
     return (
         <div ref={wrapperRef} className="bubblechart">
-            <div className="select-menue">
-                <button className="difficulty_select selected" value="keywords" id="keywords" onClick={e=> handleChange(e)}>Keywords</button>
-                <button className="difficulty_select" value="sentiment" id="compare-sentiment" onClick={e=> handleChange(e)}>Compare Sentiments</button>
+            <div className="bubblechart__select-menue">
+                <button className="bubblechart__difficulty-select bubblechart__difficulty-select--selected" value="keywords" id="keywords" onClick={e=> handleChange(e)}>Keywords</button>
+                <button className="bubblechart__difficulty-select" value="sentiment" id="compare-sentiment" onClick={e=> handleChange(e)}>Compare Sentiments</button>
                 {/* <button className="difficulty_select" value="countries" id="countries" onClick={e=> handleChange(e)}>Per Country</button> */}
             </div>
             <svg ref={svgRef}>

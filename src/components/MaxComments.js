@@ -2,6 +2,7 @@ import React from 'react'
 import { scaleLinear } from "d3"
 import { useSelector } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid';
+import '../styles/maxcomments.css'
 
 function MaxComments({ lowestComment, highestComment, sentiment, sentimentCount }) {
 
@@ -29,11 +30,11 @@ function MaxComments({ lowestComment, highestComment, sentiment, sentimentCount 
         let output = []
         for(let heading of headings) {
             output.push(
-                <div className="max_c_element" key={uuidv4()}>
-                    <span className="title-card">
-                        <div>{heading}</div>
+                <div className="card" key={uuidv4()}>
+                    <span className="card__heading">
+                        <div className="card__heading-title">{heading}</div>
                         <span 
-                            className="text" 
+                            className="card__heading-sentiment" 
                             style={
                                 heading === 'Lowest Sentiment' ? 
                                 styleLowest : heading === 'Highest Sentiment' ? 
@@ -50,7 +51,7 @@ function MaxComments({ lowestComment, highestComment, sentiment, sentimentCount 
                     {
                         heading === 'Highest Sentiment' || heading === 'Lowest Sentiment' ?
                         (
-                            <div className="sentiment">
+                            <div className="card__sentiment">
                                 {
                                     heading === 'Highest Sentiment' ? 
                                     `"${highestComment[1]}"` : heading === 'Lowest Sentiment' ? 
@@ -62,14 +63,14 @@ function MaxComments({ lowestComment, highestComment, sentiment, sentimentCount 
                     {
                         heading === 'Average Sentiment' ? 
                         (
-                            <div className="average-card">
-                                <div className="sentiment">
+                            <div className="card__average">
+                                <div className="card__average-sentiment">
                                     Negative Sentiments: {sentimentCount[0]}
                                 </div>
-                                <div className="sentiment">
+                                <div className="card__average-sentiment">
                                     Neutral Sentiments: {sentimentCount[1]}
                                 </div>
-                                <div className="sentiment">
+                                <div className="card__average-sentiment">
                                     Positive Sentiments: {sentimentCount[2]}
                                 </div>
                             </div>
@@ -78,18 +79,18 @@ function MaxComments({ lowestComment, highestComment, sentiment, sentimentCount 
                     {
                         heading === 'Lowest Sentiment' ? 
                         (
-                            <div className="comment-likes">
+                            <div className="card__comment-likes">
                                 Likes: 
                                 {lowestCommentLikes}
                             </div>
                         ) : heading === 'Highest Sentiment' ?
                         (
-                            <div className="comment-likes">
+                            <div className="card__comment-likes">
                                 Likes: 
                                 {highestCommentLikes}
                             </div>
                         ) : (
-                            <div className="comment-likes">
+                            <div className="card__comment-likes">
                                 Comments: {sentimentCount.reduce((a, b) => a + b)}
                             </div>
                         )

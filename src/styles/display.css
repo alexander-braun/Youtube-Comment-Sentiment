@@ -1,0 +1,32 @@
+.display {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5vh;
+  width: 100vw;
+}
+
+.display .videotitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.display__title-stats {
+  margin-bottom: 5vh;
+}
+
+.display__title-name {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  font-family: 'Open Sans';
+  letter-spacing: .02rem;
+  font-weight: 900;
+  text-align: center;
+  max-width: 500px;
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
+/*# sourceMappingURL=display.css.map */

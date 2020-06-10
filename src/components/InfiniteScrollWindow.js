@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector} from 'react-redux'
 import { v4 as uuidv4 } from 'uuid';
 import InfiniteScroll from 'react-infinite-scroller';
+import '../styles/infinite-scroll.css';
 
 const sort = (comments, indicator) => {
     let sorted = []
@@ -83,46 +84,47 @@ function InfiniteScrollWindow() {
     }
 
     if(!positiveComments || !negativeComments) return null
+
     return (
         <div className="infinite-wrapper">
-            <div className="infiniteScroll">
+            <div className="infinite-scroll">
                 <InfiniteScroll
-                    className="infinite-comment-wrapper"
+                    className="infinite-scroll__wrapper"
                     pageStart={0}
                     loadMore={ loadMorePositive }
                     hasMore={hasmoreItems}
                     loader={<div className="loader" key={0}>Loading ...</div>}
                     useWindow={false}
-                    getScrollParent={() => document.getElementsByClassName('infiniteScroll')[0]}
+                    getScrollParent={() => document.getElementsByClassName('infinite-scroll')[0]}
                 >
                     { 
                         positiveComments && positiveComments.map(comment => {
                             return (
-                                <div className="comment-infinite-wrapper" key={uuidv4()}>
-                                    <div className="comment-text">{`"${comment[0]}"`}</div>
-                                    <div className="comment-sentiment">{comment[3].toString().slice(0, 6)}</div>
+                                <div className="comment" key={uuidv4()}>
+                                    <div className="comment__text">{`"${comment[0]}"`}</div>
+                                    <div className="comment__sentiment">{comment[3].toString().slice(0, 6)}</div>
                                 </div>
                             )
                         })
                     }
                 </InfiniteScroll>
             </div>
-            <div className="infiniteScroll">
+            <div className="infinite-scroll">
                 <InfiniteScroll
-                    className="infinite-comment-wrapper"
+                    className="infinite-scroll__wrapper"
                     pageStart={0}
                     loadMore={ loadMoreNegative }
                     hasMore={hasmoreItems}
                     loader={<div className="loader" key={0}>Loading ...</div>}
                     useWindow={false}
-                    getScrollParent={() => document.getElementsByClassName('infiniteScroll')[1]}
+                    getScrollParent={() => document.getElementsByClassName('infinite-scroll')[1]}
                 >
                     { 
                         negativeComments && negativeComments.map(comment => {
                             return (
-                                <div className="comment-infinite-wrapper" key={uuidv4()}>
-                                    <div className="comment-text">{`"${comment[0]}"`}</div>
-                                    <div className="comment-sentiment">{comment[3].toString().slice(0, 6)}</div>
+                                <div className="comment" key={uuidv4()}>
+                                    <div className="comment__text">{`"${comment[0]}"`}</div>
+                                    <div className="comment__sentiment">{comment[3].toString().slice(0, 6)}</div>
                                 </div>
                             )
                         })

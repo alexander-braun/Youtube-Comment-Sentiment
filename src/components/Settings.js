@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
       color: 'rgba(128, 128, 128, 0.5)',
       position: 'absolute',
       right: '10px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      fontSize: '2.25rem'
     },
 }))
 
@@ -287,11 +288,25 @@ function Settings() {
 
     return (
         <div className="settings">
-            <form>
-                <input placeholder="Enter Youtube Video Link..." type="text" id="video-link" name="video-link" onChange={e => updateVideoLink(e.target.value)} value={videoLink} />
+            <form className="settings__form">
+                <input 
+                    placeholder="Enter Youtube Video Link..." 
+                    type="text" 
+                    id="video-link" 
+                    name="video-link" 
+                    onChange={e => updateVideoLink(e.target.value)} 
+                    value={videoLink} 
+                    className="settings__link-input"
+                />
                 <SearchIcon className={classes.searchIcon} onClick={calc}/>
             </form> 
-            <button onClick={calc} value="Search">Search</button>
+            <button 
+                onClick={calc} 
+                value="Search"
+                className="settings__search-button"
+            >
+                    Search
+            </button>
         </div>
     )
 }

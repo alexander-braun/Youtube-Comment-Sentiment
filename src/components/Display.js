@@ -4,6 +4,7 @@ import Bubblechart from './Bubblechart'
 import MaxComments from './MaxComments'
 import TitleStats from './TitleStats'
 import InfiniteScrollWindow from './InfiniteScrollWindow'
+import '../styles/display.css'
 
 function Display() {
 
@@ -17,7 +18,7 @@ function Display() {
 
     if(!sentiment) return null
     return (
-        <div className="Display">
+        <div className="display">
             <TitleStats videoTitle={videoTitle} />
             <MaxComments 
                 sentimentCount={sentimentCount} 
