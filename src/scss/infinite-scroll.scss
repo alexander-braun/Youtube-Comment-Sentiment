@@ -6,6 +6,15 @@
     align-items: center;
     justify-content: space-between;
     border-radius: 15px;
+
+    @media only screen and (min-width: 1100px) {
+        width: calc(90% - 2vw);
+        flex-direction: row;
+    }
+
+    @media only screen and (min-width: 1400px) {
+        width: calc(70% - 2vw);
+    }
 }
 
 .infinite-scroll {
@@ -22,6 +31,10 @@
     box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
     text-align: center;
     flex: 1 1 0;
+
+    @media only screen and (min-width: 1100px) {
+        width: calc(40% - 2vw);
+    }
 
     &::-webkit-scrollbar-thumb {
         border-radius: 10px;
