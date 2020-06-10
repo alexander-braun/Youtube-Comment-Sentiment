@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/Youtube-Comment-Sentiment/static/css/main.255a847e.chunk.css",
-    "main.js": "/Youtube-Comment-Sentiment/static/js/main.61fab861.chunk.js",
-    "main.js.map": "/Youtube-Comment-Sentiment/static/js/main.61fab861.chunk.js.map",
+    "main.css": "/Youtube-Comment-Sentiment/static/css/main.aeaf7702.chunk.css",
+    "main.js": "/Youtube-Comment-Sentiment/static/js/main.94cc5489.chunk.js",
+    "main.js.map": "/Youtube-Comment-Sentiment/static/js/main.94cc5489.chunk.js.map",
     "runtime-main.js": "/Youtube-Comment-Sentiment/static/js/runtime-main.cb30e180.js",
     "runtime-main.js.map": "/Youtube-Comment-Sentiment/static/js/runtime-main.cb30e180.js.map",
-    "static/js/2.84489751.chunk.js": "/Youtube-Comment-Sentiment/static/js/2.84489751.chunk.js",
-    "static/js/2.84489751.chunk.js.map": "/Youtube-Comment-Sentiment/static/js/2.84489751.chunk.js.map",
+    "static/js/2.fdab9b31.chunk.js": "/Youtube-Comment-Sentiment/static/js/2.fdab9b31.chunk.js",
+    "static/js/2.fdab9b31.chunk.js.map": "/Youtube-Comment-Sentiment/static/js/2.fdab9b31.chunk.js.map",
     "index.html": "/Youtube-Comment-Sentiment/index.html",
-    "precache-manifest.64fdccd89e90a2c711173c0da5cfadc8.js": "/Youtube-Comment-Sentiment/precache-manifest.64fdccd89e90a2c711173c0da5cfadc8.js",
+    "precache-manifest.62386e35c75f2016abe90a40261a1081.js": "/Youtube-Comment-Sentiment/precache-manifest.62386e35c75f2016abe90a40261a1081.js",
     "service-worker.js": "/Youtube-Comment-Sentiment/service-worker.js",
-    "static/css/main.255a847e.chunk.css.map": "/Youtube-Comment-Sentiment/static/css/main.255a847e.chunk.css.map",
-    "static/js/2.84489751.chunk.js.LICENSE.txt": "/Youtube-Comment-Sentiment/static/js/2.84489751.chunk.js.LICENSE.txt"
+    "static/css/main.aeaf7702.chunk.css.map": "/Youtube-Comment-Sentiment/static/css/main.aeaf7702.chunk.css.map",
+    "static/js/2.fdab9b31.chunk.js.LICENSE.txt": "/Youtube-Comment-Sentiment/static/js/2.fdab9b31.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.cb30e180.js",
-    "static/js/2.84489751.chunk.js",
-    "static/css/main.255a847e.chunk.css",
-    "static/js/main.61fab861.chunk.js"
+    "static/js/2.fdab9b31.chunk.js",
+    "static/css/main.aeaf7702.chunk.css",
+    "static/js/main.94cc5489.chunk.js"
   ]
 }
