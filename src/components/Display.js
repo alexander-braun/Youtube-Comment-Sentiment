@@ -4,7 +4,6 @@ import Bubblechart from './Bubblechart'
 import MaxComments from './MaxComments'
 import TitleStats from './TitleStats'
 import InfiniteScrollWindow from './InfiniteScrollWindow'
-import '../styles/display.css'
 
 function Display() {
 

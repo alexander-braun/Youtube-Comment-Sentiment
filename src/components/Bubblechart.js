@@ -11,7 +11,6 @@ import React, { useRef, useEffect, useState, useCallback } from "react"
 import useResizeObserver from './Resizeobserver'
 import { useDispatch } from 'react-redux'
 import { setChoice } from '../actions/setChoice'
-import '../styles/bubblechart.css'
 
 function Bubblechart({ data, dataSingleWords }) {
     const svgRef = useRef()

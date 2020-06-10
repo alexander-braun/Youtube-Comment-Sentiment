@@ -21,13 +21,13 @@
     align-items: center;
     width: 100%;
     text-align: center;
-    background-color: white;
-    min-height: 200px;
+    background-color: $color-white;
+    min-height: 20rem;
     justify-content: space-between;
-    border-radius: 15px;
-    padding: 15px;
+    border-radius: $border-radius-max;
+    padding: 1.5rem;
     margin-bottom: 2vh;
-    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: $small-shadow;
     transition: all .2s;
 
     @media only screen and (min-width: 1100px) {
@@ -38,7 +38,7 @@
 
     &:hover {
         transform: scale(1.02) translateY(-.2em);
-        box-shadow: 0 4px 15px 0 rgba(0,0,0,0.07), 0 1px 20px 0 rgba(0,0,0,0.06), 0 2px 4px -1px rgba(0,0,0,0.15);
+        box-shadow: $big-shadow;
     }
 
     &__heading {
@@ -47,14 +47,14 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        line-height: 28px;
+        line-height: 3rem;
     }
 
     &__heading-sentiment {
         font-size: 1.65rem;
         letter-spacing: .05rem;
         font-weight: 800;
-        font-family: 'Open Sans', sans-serif;
+        font-family: $open-sans;
     }
 
     &__heading {
@@ -63,7 +63,7 @@
     }
 
     &__sentiment {
-        font-family: 'Open Sans', sans-serif;
+        font-family: $open-sans;
         letter-spacing: .1rem;
         font-size: 2rem;
         margin-top: 2vh;
@@ -72,7 +72,7 @@
     }
 
     &__average-sentiment {
-        font-family: 'Open Sans', sans-serif;
+        font-family: $open-sans;
         letter-spacing: .1rem;
         font-size: 1.5rem;
         margin-top: 0;
@@ -81,7 +81,7 @@
     }
 
     &__comment-likes {
-        color: grey;
+        color: $color-grey-dark-1;
         font-size: 1.5rem;
     }
 }

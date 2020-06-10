@@ -1,7 +1,6 @@
 import React from 'react'
 import Settings from './components/Settings'
 import Display from './components/Display'
-import './styles/app.css'
 
 function App() {
   return (

@@ -2,7 +2,6 @@ import React from 'react'
 import { scaleLinear } from "d3"
 import { useSelector } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid';
-import '../styles/maxcomments.css'
 
 function MaxComments({ lowestComment, highestComment, sentiment, sentimentCount }) {
 

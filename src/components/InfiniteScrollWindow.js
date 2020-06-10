@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useSelector} from 'react-redux'
 import { v4 as uuidv4 } from 'uuid';
 import InfiniteScroll from 'react-infinite-scroller';
-import '../styles/infinite-scroll.css';
 
 const sort = (comments, indicator) => {
     let sorted = []
