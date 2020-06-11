@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/Youtube-Comment-Sentiment/static/css/main.595ad90a.chunk.css",
-    "main.js": "/Youtube-Comment-Sentiment/static/js/main.adbb458c.chunk.js",
-    "main.js.map": "/Youtube-Comment-Sentiment/static/js/main.adbb458c.chunk.js.map",
+    "main.css": "/Youtube-Comment-Sentiment/static/css/main.c540f964.chunk.css",
+    "main.js": "/Youtube-Comment-Sentiment/static/js/main.8dca2050.chunk.js",
+    "main.js.map": "/Youtube-Comment-Sentiment/static/js/main.8dca2050.chunk.js.map",
     "runtime-main.js": "/Youtube-Comment-Sentiment/static/js/runtime-main.cb30e180.js",
     "runtime-main.js.map": "/Youtube-Comment-Sentiment/static/js/runtime-main.cb30e180.js.map",
     "static/js/2.fdab9b31.chunk.js": "/Youtube-Comment-Sentiment/static/js/2.fdab9b31.chunk.js",
     "static/js/2.fdab9b31.chunk.js.map": "/Youtube-Comment-Sentiment/static/js/2.fdab9b31.chunk.js.map",
     "index.html": "/Youtube-Comment-Sentiment/index.html",
-    "precache-manifest.fca803c78eb87eb1e3dad1a112017934.js": "/Youtube-Comment-Sentiment/precache-manifest.fca803c78eb87eb1e3dad1a112017934.js",
+    "precache-manifest.540a2e20f4451b8a493a9037c2399dbf.js": "/Youtube-Comment-Sentiment/precache-manifest.540a2e20f4451b8a493a9037c2399dbf.js",
     "service-worker.js": "/Youtube-Comment-Sentiment/service-worker.js",
-    "static/css/main.595ad90a.chunk.css.map": "/Youtube-Comment-Sentiment/static/css/main.595ad90a.chunk.css.map",
+    "static/css/main.c540f964.chunk.css.map": "/Youtube-Comment-Sentiment/static/css/main.c540f964.chunk.css.map",
     "static/js/2.fdab9b31.chunk.js.LICENSE.txt": "/Youtube-Comment-Sentiment/static/js/2.fdab9b31.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.cb30e180.js",
     "static/js/2.fdab9b31.chunk.js",
-    "static/css/main.595ad90a.chunk.css",
-    "static/js/main.adbb458c.chunk.js"
+    "static/css/main.c540f964.chunk.css",
+    "static/js/main.8dca2050.chunk.js"
   ]
 }
