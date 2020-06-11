@@ -3,6 +3,8 @@ import { useSelector} from 'react-redux'
 import { v4 as uuidv4 } from 'uuid';
 import InfiniteScroll from 'react-infinite-scroller';
 
+
+// Kinda working but needs work
 const sort = (comments, indicator) => {
     let sorted = []
     let values = []
@@ -16,7 +18,6 @@ const sort = (comments, indicator) => {
     } else {
         values = values.sort((a, b) => a - b)
     }
-    
     
     for(let value of values) {
         for(let comment of comments) {
@@ -87,6 +88,9 @@ function InfiniteScrollWindow() {
     return (
         <div className="infinite-wrapper">
             <div className="infinite-scroll">
+                <h2 className="infinite-scroll__heading">
+                    Selected positive sentiments:
+                </h2>
                 <InfiniteScroll
                     className="infinite-scroll__wrapper"
                     pageStart={0}
@@ -109,6 +113,9 @@ function InfiniteScrollWindow() {
                 </InfiniteScroll>
             </div>
             <div className="infinite-scroll">
+                <h2 className="infinite-scroll__heading">
+                    Selected negative sentiments:
+                </h2>
                 <InfiniteScroll
                     className="infinite-scroll__wrapper"
                     pageStart={0}

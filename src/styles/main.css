@@ -37,7 +37,7 @@ body {
 
 .app__subheading {
   margin-top: 0;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
   color: rgba(15, 15, 15, 0.4);
   font-family: "Raleway", sans-serif;
   font-size: 1.65rem;
@@ -98,7 +98,7 @@ body {
 }
 
 .display__title-stats {
-  margin-bottom: 5vh;
+  margin-bottom: 2rem;
 }
 
 .display__title-name {
@@ -114,24 +114,27 @@ body {
   margin-right: 5vw;
 }
 
-.maxcomments {
+.comments {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 95%;
   flex-wrap: wrap;
+  margin-bottom: 10rem;
 }
 
 @media only screen and (min-width: 1100px) {
-  .maxcomments {
+  .comments {
     width: 90%;
+    margin-bottom: 5rem;
   }
 }
 
 @media only screen and (min-width: 1400px) {
-  .maxcomments {
+  .comments {
     width: 70%;
+    margin-bottom: 5rem;
   }
 }
 
@@ -181,6 +184,11 @@ body {
 }
 
 .card__heading {
+  font-size: 1.65rem;
+  font-weight: 600;
+}
+
+.card__heading-title {
   font-size: 1.65rem;
   font-weight: 600;
 }
@@ -235,13 +243,14 @@ body {
   width: 100%;
   max-height: 70vh;
   overflow-y: scroll;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   background-color: #fff;
   border-radius: 1.5rem;
-  margin-bottom: 2vh;
+  margin-bottom: 10rem;
   box-shadow: 0 2px 1px -1px rgba(15, 15, 15, 0.2), 0 1px 1px 0 rgba(15, 15, 15, 0.14), 0 1px 3px 0 rgba(15, 15, 15, 0.12);
   text-align: center;
   flex: 1 1 0;
@@ -250,13 +259,14 @@ body {
 @media only screen and (min-width: 1100px) {
   .infinite-scroll {
     width: calc(40% - 2vw);
+    margin-bottom: 5rem;
   }
 }
 
 .infinite-scroll::-webkit-scrollbar-thumb {
   border-radius: 1rem;
   background-color: #ff6565;
-  -webkit-box-shadow: inset 0 0 6px rgba(15, 15, 15, 0.78);
+  -webkit-box-shadow: inset 0 0 6px rgba(15, 15, 15, 0.5);
 }
 
 .infinite-scroll::-webkit-scrollbar-track {
@@ -283,6 +293,13 @@ body {
   align-items: left;
   justify-content: left;
   width: 100%;
+}
+
+.infinite-scroll__heading {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.65rem;
+  font-weight: 600;
 }
 
 .comment {

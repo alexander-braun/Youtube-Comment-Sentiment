@@ -206,7 +206,7 @@ function Bubblechart({ data, dataSingleWords }) {
 
         // Determines the scale based on screen size
         let scaleBubbles = 1.3
-        if(dimensions.width <= 700) scaleBubbles = 1
+        if(dimensions.width <= 700) scaleBubbles = .8
 
         // Scale for bubbles using scale var
         const scaleL = d3.scaleSqrt()
