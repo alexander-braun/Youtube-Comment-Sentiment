@@ -35,7 +35,7 @@
     transition: all .2s;
 
     &:hover {
-        transform: scale(1.02) translateY(-.2em);
+        transform: scale(1.005) translateY(-.1em);
         box-shadow: $big-shadow;
     }
 
