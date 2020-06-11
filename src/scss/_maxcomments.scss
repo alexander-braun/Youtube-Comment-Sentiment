@@ -53,7 +53,7 @@
         line-height: 3rem;
     }
 
-    &__heading-sentiment {
+    &__sentiment {
         font-size: 1.65rem;
         letter-spacing: .05rem;
         font-weight: 800;
@@ -65,12 +65,12 @@
         font-weight: 600;
     }
 
-    &__heading-title {
+    &__title {
         font-size: 1.65rem;
         font-weight: 600;
     }
 
-    &__sentiment {
+    &__comment {
         font-family: $open-sans;
         letter-spacing: .1rem;
         font-size: 2rem;

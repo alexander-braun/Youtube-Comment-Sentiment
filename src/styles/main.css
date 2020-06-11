@@ -176,7 +176,7 @@ body {
   line-height: 3rem;
 }
 
-.card__heading-sentiment {
+.card__sentiment {
   font-size: 1.65rem;
   letter-spacing: .05rem;
   font-weight: 800;
@@ -188,12 +188,12 @@ body {
   font-weight: 600;
 }
 
-.card__heading-title {
+.card__title {
   font-size: 1.65rem;
   font-weight: 600;
 }
 
-.card__sentiment {
+.card__comment {
   font-family: "Open Sans", sans-serif;
   letter-spacing: .1rem;
   font-size: 2rem;

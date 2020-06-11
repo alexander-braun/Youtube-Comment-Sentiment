@@ -31,9 +31,9 @@ function Comments({ lowestComment, highestComment, sentiment, sentimentCount }) 
             output.push(
                 <div className="card" key={uuidv4()}>
                     <span className="card__heading">
-                        <h2 className="card__heading-title">{heading}</h2>
+                        <h2 className="card__title">{heading}</h2>
                         <div 
-                            className="card__heading-sentiment" 
+                            className="card__sentiment" 
                             style={
                                 heading === 'Lowest Sentiment' ? 
                                 styleLowest : heading === 'Highest Sentiment' ? 
@@ -50,7 +50,7 @@ function Comments({ lowestComment, highestComment, sentiment, sentimentCount }) 
                     {
                         heading === 'Highest Sentiment' || heading === 'Lowest Sentiment' ?
                         (
-                            <div className="card__sentiment">
+                            <div className="card__comment">
                                 {
                                     heading === 'Highest Sentiment' ? 
                                     `"${highestComment[1]}"` : heading === 'Lowest Sentiment' ? 
