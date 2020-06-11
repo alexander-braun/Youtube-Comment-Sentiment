@@ -4,25 +4,39 @@ import { v4 as uuidv4 } from 'uuid';
 import InfiniteScroll from 'react-infinite-scroller';
 
 
-// Kinda working but needs work
+// Sort the comments by sentiment value
 const sort = (comments, indicator) => {
     let sorted = []
     let values = []
 
+    // Give comments ID's for later identification
+    let index = 0;
+    for(let comment of comments) {
+        comment.push(index)
+        index++
+    }
+
+    // Get all the sentiment-values
     for(let comment of comments) {
         values.push(comment[3])
     }
 
+    // Sort all the sentiment values
     if(indicator === '+') {
         values = values.sort((a, b) => a - b).reverse()    
     } else {
         values = values.sort((a, b) => a - b)
     }
     
+    // Go through the values and find their belonging comment - if the 
+    // index is already used, continue searching for the belonging value
+    const usedIndexes = []
     for(let value of values) {
         for(let comment of comments) {
-            if(comment[3] === value) {
+            if(comment[3] === value && usedIndexes.indexOf(comment[5]) === -1) {
                 sorted.push(comment)
+                usedIndexes.push(comment[5])
+                break
             }
         }
     }
@@ -30,6 +44,8 @@ const sort = (comments, indicator) => {
     return sorted
 }
 
+// Prefilter the comments into positive and negative comments
+// Makes the sorting easier later
 const filterComments = (comments) => {
     let positive = []
     let negative = []
