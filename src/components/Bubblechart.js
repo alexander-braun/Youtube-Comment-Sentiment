@@ -201,7 +201,7 @@ function Bubblechart({ data, dataSingleWords }) {
             .range(["#00e8e8", "#F2CB05", "#F28705", "#D92818", "#D94141", "#0ba3ff", "#6aafda"])
 
         const colorScaleS = scaleLinear()
-            .domain([0, 5])
+            .domain([-2, 2])
             .range(['rgb(217, 29, 0)', 'rgb(66, 230, 0)'])
 
         // Determines the scale based on screen size
@@ -307,10 +307,7 @@ function Bubblechart({ data, dataSingleWords }) {
         const el = document.getElementById(id)
         el.classList.add('bubblechart__difficulty-select--selected')
 
-        if(id === 'countries') {
-            document.getElementById('keywords').classList.remove('bubblechart__difficulty-select--selected')
-            document.getElementById('compare-sentiment').classList.remove('bubblechart__difficulty-select--selected')
-        } else if(id === 'compare-sentiment') {
+        if(id === 'compare-sentiment') {
             document.getElementById('keywords').classList.remove('bubblechart__difficulty-select--selected')
             //document.getElementById('countries').classList.remove('selected')
         } else if(id === 'keywords') {

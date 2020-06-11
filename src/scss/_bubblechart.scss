@@ -42,12 +42,12 @@
         margin-right: 1.5rem;
         margin-left: 1.5rem;
         padding: .5rem;
+        transition: all .1s;
+        border-bottom: 0px solid $color-black;
 
         &--selected {
             font-weight: 600;
-            -webkit-box-shadow: 0 4px 4px -2px $color-black;
-            -moz-box-shadow: 0 4px 4px -2px $color-black;
-            box-shadow: 0 2px 0px 0px $color-black;
+            border-bottom: 2px solid $color-black;
         }
     }
 }
