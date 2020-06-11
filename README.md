@@ -5,4 +5,4 @@ video link. As a little feature, the user gets a bubblechart visualization for f
 keywords in comments as well as a chart for used positive and negative words.
 The App makes use of natural, keyword_extractor and the youtube api.
 
-Build with React, Redux, D3 and a little MaterialUI.
+Build with React, Redux, D3 and a some MaterialUI.
