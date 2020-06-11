@@ -1,4 +1,4 @@
-.settings {
+.search {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -25,7 +25,7 @@
         font-family: inherit;
     }
 
-    &__search-button {
+    &__button {
         margin-top: 2em;
         background-color: $color-secondary-green;
         color: $color-white;

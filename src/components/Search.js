@@ -175,7 +175,7 @@ const getVideoTitle = async (ID) => {
     return null
 }
 
-function Settings() {
+function Search() {
 
     const [videoLink, updateVideoLink] = useState('')
     const [videoID, updateVideoID] = useState()
@@ -294,8 +294,8 @@ function Settings() {
     const classes = useStyles()
 
     return (
-        <div className="settings">
-            <form className="settings__form">
+        <div className="search">
+            <form className="search__form">
                 <input 
                     placeholder="Enter Youtube Video Link..." 
                     type="text" 
@@ -303,14 +303,14 @@ function Settings() {
                     name="video-link" 
                     onChange={e => updateVideoLink(e.target.value)} 
                     value={videoLink} 
-                    className="settings__link-input"
+                    className="search__link-input"
                 />
                 <SearchIcon className={classes.searchIcon} onClick={calc}/>
             </form> 
             <button 
                 onClick={calc} 
                 value="Search"
-                className="settings__search-button"
+                className="search__button"
             >
                     Search
             </button>
@@ -318,4 +318,4 @@ function Settings() {
     )
 }
 
-export default Settings
+export default Search

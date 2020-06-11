@@ -43,7 +43,7 @@ body {
   font-size: 1.65rem;
 }
 
-.settings {
+.search {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -52,7 +52,7 @@ body {
   font-family: "Raleway", sans-serif;
 }
 
-.settings__form {
+.search__form {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -61,7 +61,7 @@ body {
   position: relative;
 }
 
-.settings__link-input {
+.search__link-input {
   height: 3rem;
   min-width: 35rem;
   border-radius: 50rem;
@@ -71,7 +71,7 @@ body {
   font-family: inherit;
 }
 
-.settings__search-button {
+.search__button {
   margin-top: 2em;
   background-color: #36B359;
   color: #fff;
@@ -103,7 +103,7 @@ body {
 
 .display__title-name {
   font-size: 2.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 5rem;
   margin-top: 1rem;
   font-family: "Open Sans", sans-serif;
   letter-spacing: .02rem;

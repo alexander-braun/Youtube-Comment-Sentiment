@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import Bubblechart from './Bubblechart'
 import MaxComments from './MaxComments'
-import TitleStats from './TitleStats'
 import InfiniteScrollWindow from './InfiniteScrollWindow'
 
 function Display() {
@@ -18,7 +17,7 @@ function Display() {
     if(!sentiment) return null
     return (
         <div className="display">
-            <TitleStats videoTitle={videoTitle} />
+            <h2 className="display__title-name">{videoTitle}</h2>
             <MaxComments 
                 sentimentCount={sentimentCount} 
                 lowestComment={lowestComment} 
