@@ -30,7 +30,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-// Gets english lang keywords with the help of keywordextractor from all the comments for bubblechar
+/**
+ * Gets english lang keywords with the help of keywordextractor from all the comments for the bubblechart
+ */
 const getKeywords = (comments) => {
     let keywords = []
 
@@ -46,7 +48,9 @@ const getKeywords = (comments) => {
     return keywords
 }
 
-// Counts Keywords for the bubblechart comparsion
+/**
+ * Counts Keywords for the bubblechart comparsion
+ */
 const countKeywords = (keywords) => {
 
     // Get all the unique keywords
@@ -72,7 +76,9 @@ const countKeywords = (keywords) => {
     return keyCount
 }
 
-// Takes the highest and lowest comments and gets the like count
+/**
+ * Takes the highest and lowest comments and gets the like count
+ */
 const findLikesForHighestAndLowestComment = (highest, lowest, comments) => {
     let highestCommentLikes = 0
     let lowestCommentLikes = 0
@@ -87,16 +93,18 @@ const findLikesForHighestAndLowestComment = (highest, lowest, comments) => {
     return [highestCommentLikes, lowestCommentLikes]
 }
 
-// Goes through all the comments and finds words <= -1 or >= 1 and puts them in an array
-// Counts positive, neutral and negative comments
-// Finds the highest and lowest sentiment comments
-// Gets the overall sentiment
+/**
+ * Goes through all the comments and finds words <= -1 or >= 1 and puts them in an array
+ * Counts positive, neutral and negative comments
+ * Finds the highest and lowest sentiment comments
+ * Gets the overall sentiment
+ */
 const overallSentiment = (comments) => {
     let analyzer = new Analyzer("English", stemmer, "afinn")
     let length = comments.length
     let sentiments = parseFloat(0)
 
-    // Counts POS and NEG comments POS/NEUTRAL/NEG
+    // Counts POS and NEG comments [POS,NEUTRAL,NEG]
     let sentimentCount = [0, 0, 0]
 
     // Set highest and lowest commentscore
@@ -111,7 +119,7 @@ const overallSentiment = (comments) => {
 
         // Split comment to words
         let tokenized = comments[i].split(' ')
-
+        
         // Get the single word sentiments
         let sentiSingle
         for(let j = 0; j < tokenized.length; j++) {
@@ -127,6 +135,7 @@ const overallSentiment = (comments) => {
                 highWords.push(obj)
             }
         }
+        
         
         // Get the whole comments sentiment from here on
         const sentiment = parseFloat(analyzer.getSentiment(tokenized))
@@ -147,14 +156,19 @@ const overallSentiment = (comments) => {
     return [sentiments / length, sentimentCount, highest, lowest, lowWords, highWords]
 }
 
-// Takes the video link and returns the ID
+
+/**
+ * Takes the video link and returns the ID
+ */
 const shortenToVideoID = (link) => {
     const equalSignIndex = link.search('=')
     const videoID = link.slice(equalSignIndex + 1)
     return videoID
 }
 
-// Seperates the pure text from additional information wich are not needed in this step
+/**
+ * Seperates the pure text from additional information wich are not needed in this step
+ */
 const cleanComments = (comments) => {
     let cleanedComments = []
     for(let i = 0; i < comments.length; i++) {
@@ -163,7 +177,9 @@ const cleanComments = (comments) => {
     return cleanedComments
 }
 
-// Uses the noembed site to get the video title, reduces api cost
+/**
+ * Uses the noembed site to get the video title, reduces api cost
+ */
 const getVideoTitle = async (ID) => {
     if(ID && ID !== undefined) {
         let url = `https://noembed.com/embed?url=https%3A%2F%2Fhttps://www.youtube.com/watch?v=${ID}`
@@ -176,12 +192,12 @@ const getVideoTitle = async (ID) => {
 }
 
 function Search() {
-
     const [videoLink, updateVideoLink] = useState('')
     const [videoID, updateVideoID] = useState()
     const dispatch = useDispatch()
 
     useEffect(() => {
+        
         // Get and Update Video ID
         const ID = shortenToVideoID(videoLink)
         updateVideoID(ID)
@@ -226,7 +242,6 @@ function Search() {
     }
 
     // Connection to the youtube API -> setup to get more then 100 comments (all the comments f.e.) but too much api cost atm
-    // 
     const getComments = () => {
         let ID = videoID
         let maxResults = 100
@@ -244,8 +259,10 @@ function Search() {
                 }
             }
 
-            // Change the url based on if there is a new nextPageToken or not
-            // Setup and working for future use but API cost was too high
+            /**
+             * Change the url based on the existence of a nextpagetoken
+             * Setup and working for future use but API cost was too high
+             */
             let url
             if(token) {
                 url = `https://www.googleapis.com/youtube/v3/commentThreads?key=${apiKey}&textFormat=plainText&part=snippet&videoId=${ID}&maxResults=${maxResults}&pageToken=${token}`
@@ -277,9 +294,11 @@ function Search() {
             // Push data to array that is passed along
             textArr.push(comments)
 
-            // If there is one more comment page to load grab the nextpagetoken for that site
-            // Not used as it eats the free api usage too quickly. Could grab all other comments
-            // If used
+            /**
+             * If there is one more comment page to load grab the nextpagetoken for that site
+             * Not used as it eats the free api usage too quickly. Could grab all other comments
+             * If used
+             */
             if(nextPageToken) {
                 return fetchComments(textArr, nextPageToken)
             }

@@ -103,12 +103,11 @@ function Bubblechart({ data, dataSingleWords }) {
     }
 
     useEffect(() => {
-
         let data = dataChoice()
         if(!dimensions) return
         let svg = null
         svg = select(svgRef.current)
-
+        
         const mouseEnter = (value) => {
             svg
                 .selectAll('.rec')
@@ -227,7 +226,6 @@ function Bubblechart({ data, dataSingleWords }) {
         const xCenter = [dimensions.width / 4, dimensions.width - dimensions.width / 4]
 
         const simulationBubbles = () => {
-            if(choice === 'countries') return
             forceSimulation(data)
                 .force("charge", forceManyBody().strength(20))
                 .force('x', choice === 'sentiment' ? d3.forceX().x(d => {
@@ -309,9 +307,7 @@ function Bubblechart({ data, dataSingleWords }) {
 
         if(id === 'compare-sentiment') {
             document.getElementById('keywords').classList.remove('bubblechart__difficulty-select--selected')
-            //document.getElementById('countries').classList.remove('selected')
         } else if(id === 'keywords') {
-            //document.getElementById('countries').classList.remove('selected')
             document.getElementById('compare-sentiment').classList.remove('bubblechart__difficulty-select--selected')
         }
     }
@@ -321,11 +317,8 @@ function Bubblechart({ data, dataSingleWords }) {
             <div className="bubblechart__select-menue">
                 <button className="bubblechart__difficulty-select bubblechart__difficulty-select--selected" value="keywords" id="keywords" onClick={e=> handleChange(e)}>Keywords</button>
                 <button className="bubblechart__difficulty-select" value="sentiment" id="compare-sentiment" onClick={e=> handleChange(e)}>Compare Sentiments</button>
-                {/* <button className="difficulty_select" value="countries" id="countries" onClick={e=> handleChange(e)}>Per Country</button> */}
             </div>
-            <svg ref={svgRef}>
-
-            </svg>
+            <svg ref={svgRef}></svg>
         </div>
     )
 }

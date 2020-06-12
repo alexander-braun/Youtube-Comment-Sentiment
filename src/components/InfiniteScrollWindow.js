@@ -28,8 +28,10 @@ const sort = (comments, indicator) => {
         values = values.sort((a, b) => a - b)
     }
     
-    // Go through the values and find their belonging comment - if the 
-    // index is already used, continue searching for the belonging value
+    /**
+     * Go through the values and find their belonging comment - if the 
+     * index is already used, continue searching for the belonging value
+     */
     const usedIndexes = []
     for(let value of values) {
         for(let comment of comments) {
@@ -44,8 +46,10 @@ const sort = (comments, indicator) => {
     return sorted
 }
 
-// Prefilter the comments into positive and negative comments
-// Makes the sorting easier later
+/**
+ * Prefilter the comments into positive and negative comments
+ * Makes the sorting easier later
+ */
 const filterComments = (comments) => {
     let positive = []
     let negative = []
