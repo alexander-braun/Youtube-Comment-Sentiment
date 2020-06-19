@@ -1,26 +1,26 @@
-import { 
-    SET_HIGHEST_SENTIMENT_SINGLE_WORDS, 
-    SET_LOWEST_SENTIMENT_SINGLE_WORDS
-} from '../actions/constants'
+import {
+  SET_HIGHEST_SENTIMENT_SINGLE_WORDS,
+  SET_LOWEST_SENTIMENT_SINGLE_WORDS,
+} from '../actions/constants';
 
 const initialState = {
-    highestSingleWords: [],
-    lowestSingleWords: []
-}
+  highestSingleWords: [],
+  lowestSingleWords: [],
+};
 
 export const singleWordSentiments = (state = initialState, action) => {
-    switch(action.type) {
-        case SET_HIGHEST_SENTIMENT_SINGLE_WORDS:
-            return {
-                ...state,
-                highestSingleWords: action.highestSingleWords
-            }
-        case SET_LOWEST_SENTIMENT_SINGLE_WORDS:
-            return {
-                ...state,
-                lowestSingleWords: action.lowestSingleWords
-            }
-        default:
-            return state
-    }
-}
+  switch (action.type) {
+    case SET_HIGHEST_SENTIMENT_SINGLE_WORDS:
+      return {
+        ...state,
+        highestSingleWords: action.highestSingleWords,
+      };
+    case SET_LOWEST_SENTIMENT_SINGLE_WORDS:
+      return {
+        ...state,
+        lowestSingleWords: action.lowestSingleWords,
+      };
+    default:
+      return state;
+  }
+};
