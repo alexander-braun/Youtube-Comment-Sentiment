@@ -1,23 +1,23 @@
 .app {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
 
-    &__page-title {
-        font-family: $paytone;
-        color: $color-primary-red;
-        font-size: 5rem;
-        margin-bottom: 0;
-        margin-top: 3.35rem;
-    }
+  &__page-title {
+    font-family: $paytone;
+    color: $color-primary-red;
+    font-size: 5rem;
+    margin-bottom: 0;
+    margin-top: 3.35rem;
+  }
 
-    &__subheading {
-        margin-top: 0;
-        margin-bottom: 2.5rem;
-        color: rgba($color-black, .4);
-        font-family: $raleway;
-        font-size: 1.65rem;
-    }
+  &__subheading {
+    margin-top: 0;
+    margin-bottom: 2.5rem;
+    color: rgba($color-black, 0.4);
+    font-family: $raleway;
+    font-size: 1.65rem;
+  }
 }
