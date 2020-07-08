@@ -3,7 +3,7 @@ import { scaleLinear } from 'd3';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
-function Comments({
+function HighestLowestAverage({
   lowestComment,
   highestComment,
   sentiment,
@@ -112,4 +112,4 @@ function Comments({
   return <div className="comments">{generateSentimentField()}</div>;
 }
 
-export default Comments;
+export default HighestLowestAverage;
