@@ -3,85 +3,30 @@ import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import InfiniteScroll from 'react-infinite-scroller';
 
-// Sort the comments by sentiment value
-const sort = (comments, indicator) => {
-  let sorted = [];
-  let values = [];
-
-  // Give comments ID's for later identification
-  let index = 0;
-  for (let comment of comments) {
-    comment.push(index);
-    index++;
-  }
-
-  // Get all the sentiment-values
-  for (let comment of comments) {
-    values.push(comment[3]);
-  }
-
-  // Sort all the sentiment values
-  if (indicator === '+') {
-    values = values.sort((a, b) => a - b).reverse();
-  } else {
-    values = values.sort((a, b) => a - b);
-  }
-
-  /**
-   * Go through the values and find their belonging comment - if the
-   * index is already used, continue searching for the belonging value
-   */
-  const usedIndexes = [];
-  for (let value of values) {
-    for (let comment of comments) {
-      if (comment[3] === value && usedIndexes.indexOf(comment[5]) === -1) {
-        sorted.push(comment);
-        usedIndexes.push(comment[5]);
-        break;
-      }
-    }
-  }
-
-  return sorted;
-};
-
-/**
- * Prefilter the comments into positive and negative comments
- * Makes the sorting easier later
- */
-const filterComments = (comments) => {
-  let positive = [];
-  let negative = [];
-  for (let comment of comments) {
-    if (comment[3] > 0) {
-      positive.push(comment);
-    } else if (comment[3] < 0) {
-      negative.push(comment);
-    }
-  }
-
-  positive = sort(positive, '+');
-  negative = sort(negative, '-');
-
-  return [positive, negative];
-};
+//Helper
+import { filterComments } from './helper/filterComments_helper';
 
 function InfiniteScrollWindow() {
   let comments = useSelector((state) => state.comments);
   let [commentsFiltered, setCommentsFiltered] = useState();
   let [positiveComments, setPositiveComments] = useState();
   let [negativeComments, setNegativeComments] = useState();
+  const [hasmoreItems, setHasmoreItems] = useState(true);
 
+  /**
+   * Filters the comments when comments change
+   */
   useEffect(() => {
     setCommentsFiltered(filterComments(comments));
   }, [comments]);
 
+  /**
+   * When filtered comments change update the positive and negative comments
+   */
   useEffect(() => {
     commentsFiltered && setPositiveComments(commentsFiltered[0].slice(0, 10));
     commentsFiltered && setNegativeComments(commentsFiltered[1].slice(0, 10));
   }, [commentsFiltered]);
-
-  const [hasmoreItems, setHasmoreItems] = useState(true);
 
   const loadMorePositive = () => {
     let count = positiveComments.length + 5;

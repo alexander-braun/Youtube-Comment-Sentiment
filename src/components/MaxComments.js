@@ -9,6 +9,14 @@ function Comments({
   sentiment,
   sentimentCount,
 }) {
+  const highestCommentLikes = useSelector(
+    (state) => state.highestAndLowestCommentCount[0]
+  );
+
+  const lowestCommentLikes = useSelector(
+    (state) => state.highestAndLowestCommentCount[1]
+  );
+
   const colorScale = scaleLinear()
     .domain([-2, 2])
     .range(['rgb(238, 0, 0)', 'rgb(66, 230, 0)']);
@@ -24,13 +32,6 @@ function Comments({
   const average = {
     color: colorScale(sentiment),
   };
-
-  const highestCommentLikes = useSelector(
-    (state) => state.highestAndLowestCommentCount[0]
-  );
-  const lowestCommentLikes = useSelector(
-    (state) => state.highestAndLowestCommentCount[1]
-  );
 
   const generateSentimentField = () => {
     const headings = [

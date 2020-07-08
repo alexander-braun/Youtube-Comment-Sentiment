@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 //MUI
 import SearchIcon from '@material-ui/icons/Search';
@@ -9,6 +10,7 @@ import { setKeycounts } from '../actions/setKeycounts';
 import { setVideoTitle } from '../actions/setVideoTitle';
 import { setComments } from '../actions/setComments';
 import { setHighestAndLowestCommentCount } from '../actions/setHighestAndLowestCommentCount';
+import { toggleNoCommentsModal } from '../actions/toggleNoCommentsModal';
 import {
   setHighestSingleWords,
   setLowestSingleWords,
@@ -34,7 +36,10 @@ import { shoertenToVideoID } from './helper/shoertenToVideoID_helper';
 //Assets
 import { SearchStyles } from './SearchStyles';
 
-function Search() {
+//Components
+import NoCommentsModal from './NoCommentsModal';
+
+function Search({ noCommentsModal }) {
   const [videoLink, updateVideoLink] = useState('');
   const [videoID, updateVideoID] = useState();
   const dispatch = useDispatch();
@@ -55,6 +60,10 @@ function Search() {
 
     // Get last 100 comments (YT always returns 100 if there are at least 100 comments)
     let comments = await fetchComments(videoID);
+    //Method returns false when comments are deactivated
+    if (!comments || comments.length === 0) {
+      return dispatch(toggleNoCommentsModal());
+    }
     if (comments.length === 0) return;
     comments = comments.flat();
     dispatch(setComments(comments));
@@ -88,7 +97,7 @@ function Search() {
   };
 
   const classes = SearchStyles();
-
+  console.log(noCommentsModal);
   return (
     <div className="search">
       <form className="search__form">
@@ -110,8 +119,13 @@ function Search() {
       >
         Search
       </button>
+      {noCommentsModal && <NoCommentsModal />}
     </div>
   );
 }
 
-export default Search;
+const mapStateToProps = (state) => ({
+  noCommentsModal: state.noCommentsModal,
+});
+
+export default connect(mapStateToProps)(Search);

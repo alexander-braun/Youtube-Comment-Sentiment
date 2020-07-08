@@ -30,10 +30,15 @@ export const fetchComments = (videoID) => {
     }
 
     // Grab the data and get comment and likecount for comment
+    let comments, nextPageToken;
+
     const response = await fetch(url);
     const data = await response.json();
-    const nextPageToken = await data['nextPageToken'];
-    let comments = await data['items'];
+    if (data.error && data.error.code === 403) {
+      return false;
+    }
+    nextPageToken = await data['nextPageToken'];
+    comments = await data['items'];
 
     // If the address was f.e. empty and there are no results just return []
     if (!comments) return [];

@@ -6,6 +6,7 @@ import { comments } from './comments';
 import { highestAndLowestCommentCount } from './highestAndLowestCommentCount';
 import { singleWordSentiments } from './singleWordSentiments';
 import { choice } from './choice';
+import { noCommentsModal } from './noCommentsModal';
 
 export default combineReducers({
   videoTitle,
@@ -15,4 +16,5 @@ export default combineReducers({
   highestAndLowestCommentCount,
   singleWordSentiments,
   choice,
+  noCommentsModal,
 });
