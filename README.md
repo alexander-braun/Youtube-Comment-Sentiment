@@ -1,8 +1,19 @@
-This is a sentiment analyser for youtube comments.
-The app takes the last 100 comments and calculates an averaged sentiment from all the comments.
-It sorts comments by sentiment and finds the highest- and lowest ranking comments for a given
-video link. As a little feature, the user gets a bubblechart visualization for frequent used
-keywords in comments as well as a chart for used positive and negative words.
-The App makes use of natural, keyword_extractor and the youtube api.
+<h1 align="center">
+    <br>
+    <a href="https://alexander-braun.github.io/consensus/">
+        Consensus 
+    </a>
+</h1>
 
-Build with React, Redux, D3 and a some MaterialUI.
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+</p>
+
+![screenshot](https://raw.githubusercontent.com/alexander-braun/consensus/master/preview_images/gif-consensus.gif)
+
+## Key Features
+
+- Detect sentiments from the last 100 comments of a youtube video and know beforehand if it's worth a watch!
+- Presents most positive and negative comments
+- Calculates the average sentiment
+- Presents keywords and sentiments in a bubblechart
