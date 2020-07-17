@@ -16,22 +16,16 @@ export const SET_HIGHEST_SENTIMENT_SINGLE_WORDS =
 export const SET_LOWEST_SENTIMENT_SINGLE_WORDS =
   'SET_LOWEST_SENTIMENT_SINGLE_WORD';
 
+type SingleWords = { word: string; sentiment: number; category?: number }[];
+
 export interface SetHighestSentimentSingleWords {
   type: typeof SET_HIGHEST_SENTIMENT_SINGLE_WORDS;
-  highestSingleWords: {
-    word: string;
-    sentiment: number;
-    category?: number;
-  }[];
+  highestSingleWords: SingleWords;
 }
 
 export interface SetLowestSentimentSingleWords {
   type: typeof SET_LOWEST_SENTIMENT_SINGLE_WORDS;
-  lowestSingleWords: {
-    word: string;
-    sentiment: number;
-    category?: number;
-  }[];
+  lowestSingleWords: SingleWords;
 }
 
 export interface ToggleModal {
@@ -45,7 +39,7 @@ export interface SetHighLowCommentCount {
 
 export interface SetKeyCounts {
   type: typeof SET_KEYCOUNTS;
-  keyCounts: { [key: string]: Number };
+  keyCounts: { [key: string]: number };
 }
 
 export interface SetComments {
@@ -65,12 +59,12 @@ export interface SetVideoTitle {
 
 export interface SetSentiment {
   type: typeof SET_SENTIMENT;
-  sentiment: string;
+  sentiment: number;
 }
 
 export interface SetSentimentCount {
   type: typeof SET_SENTIMENT_COUNT;
-  sentimentCount: number[];
+  sentimentCount: [number, number, number];
 }
 
 export interface SetHighestComment {
@@ -88,11 +82,11 @@ export interface SetCommentCount {
   commentCount: number;
 }
 
-export type CommentCountHighLow = SetHighLowCommentCount;
+export type CommentCountActionTypes = SetHighLowCommentCount;
 
 export type VideoTitleActionTypes = SetVideoTitle;
 
-export type Choice = setChoice;
+export type ChartChoiceActionTypes = setChoice;
 
 export type CommentsActionTypes = SetComments;
 
@@ -100,7 +94,7 @@ export type KeyCounts = SetKeyCounts;
 
 export type ModalActionTypes = ToggleModal;
 
-export type SingleWordSentiments =
+export type SingleWordSentimentsActionTypes =
   | SetHighestSentimentSingleWords
   | SetLowestSentimentSingleWords;
 
@@ -113,10 +107,10 @@ export type SentimentActionTypes =
 
 export type AppActions =
   | SentimentActionTypes
-  | Choice
+  | ChartChoiceActionTypes
   | VideoTitleActionTypes
   | CommentsActionTypes
-  | CommentCountHighLow
+  | CommentCountActionTypes
   | KeyCounts
   | ModalActionTypes
-  | SingleWordSentiments;
+  | SingleWordSentimentsActionTypes;

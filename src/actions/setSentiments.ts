@@ -7,12 +7,14 @@ import {
   AppActions,
 } from './constants';
 
-export const setSentiment = (sentiment: string): AppActions => ({
+export const setSentiment = (sentiment: number): AppActions => ({
   type: SET_SENTIMENT,
   sentiment,
 });
 
-export const setSentimentCount = (sentimentCount: number[]): AppActions => ({
+export const setSentimentCount = (
+  sentimentCount: [number, number, number]
+): AppActions => ({
   type: SET_SENTIMENT_COUNT,
   sentimentCount,
 });

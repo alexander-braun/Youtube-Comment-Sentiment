@@ -2,22 +2,30 @@ import React from 'react';
 import { scaleLinear } from 'd3';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import { AppState } from '../reducers';
+
+interface HighestLowestAverage {
+  lowestComment: [number, string];
+  highestComment: [number, string];
+  sentiment: number;
+  sentimentCount: [number, number, number];
+}
 
 function HighestLowestAverage({
   lowestComment,
   highestComment,
   sentiment,
   sentimentCount,
-}) {
+}: HighestLowestAverage) {
   const highestCommentLikes = useSelector(
-    (state) => state.highestAndLowestCommentCount[0]
+    (state: AppState) => state.highestAndLowestCommentCount[0]
   );
 
   const lowestCommentLikes = useSelector(
-    (state) => state.highestAndLowestCommentCount[1]
+    (state: AppState) => state.highestAndLowestCommentCount[1]
   );
 
-  const colorScale = scaleLinear()
+  const colorScale = scaleLinear<string>()
     .domain([-2, 2])
     .range(['rgb(238, 0, 0)', 'rgb(66, 230, 0)']);
 
@@ -32,7 +40,6 @@ function HighestLowestAverage({
   const average = {
     color: colorScale(sentiment),
   };
-
   const generateSentimentField = () => {
     const headings = [
       'Highest Sentiment',
@@ -108,7 +115,6 @@ function HighestLowestAverage({
     }
     return output;
   };
-
   return <div className="comments">{generateSentimentField()}</div>;
 }
 

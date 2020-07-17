@@ -4,17 +4,29 @@ import {
   SET_HIGHEST_COMMENT,
   SET_LOWEST_COMMENT,
   SET_COMMENT_COUNT,
+  SentimentActionTypes,
 } from '../actions/constants';
 
-const initialState = {
+const initialState: sentiment = {
   sentiment: 0,
-  sentimentCount: [null, null],
-  highestComment: '',
-  lowestComment: '',
+  sentimentCount: [0, 0, 0],
+  highestComment: [NaN, ''],
+  lowestComment: [NaN, ''],
   commentCount: 0,
 };
 
-export const sentiment = (state = initialState, action) => {
+interface sentiment {
+  sentiment: number;
+  sentimentCount: [number, number, number];
+  highestComment: [number, string];
+  lowestComment: [number, string];
+  commentCount: number;
+}
+
+export const sentiment = (
+  state: sentiment = initialState,
+  action: SentimentActionTypes
+): sentiment => {
   switch (action.type) {
     case SET_SENTIMENT:
       return {
