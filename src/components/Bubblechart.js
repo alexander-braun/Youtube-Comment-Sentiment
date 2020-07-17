@@ -22,6 +22,13 @@ function Bubblechart({ data, dataSingleWords }) {
   const dispatch = useDispatch();
 
   let scoreValues = [];
+
+  const getBubbleCount = () => {
+    let bubbleCount = 25;
+    if (window.innerWidth < 700) bubbleCount = 15;
+    return bubbleCount;
+  };
+
   const heighestXEntries = () => {
     // Get all unique counts for a word and sort them
     for (let entry of entries) {
@@ -30,21 +37,18 @@ function Bubblechart({ data, dataSingleWords }) {
     }
     scoreValues.sort((a, b) => a - b);
 
-    // ScoreCount is the max number of bubbles for the bubblediagram
-    let scoreCount = 25;
-    if (window.innerWidth < 700) scoreCount = 15;
-
     // goes backwards through the scores and pushes [word, count] into newEntries
     let newEntries = [];
+    const bubbleCount = getBubbleCount();
     for (let i = scoreValues.length; i > 0; i--) {
       newEntries.push(
         ...entries.filter((arr) => {
           return arr[1] === scoreValues[i] && arr;
         })
       );
-      if (newEntries.length >= scoreCount) break;
+      if (newEntries.length >= bubbleCount) break;
     }
-    return newEntries.slice(0, scoreCount);
+    return newEntries.slice(0, bubbleCount);
   };
 
   let newEntries = heighestXEntries();

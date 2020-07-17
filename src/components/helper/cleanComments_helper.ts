@@ -1,7 +1,10 @@
 /**
  * Seperates the pure text from additional information wich are not needed in this step
  */
-export const cleanComments = (comments) => {
+
+export const cleanComments = (
+  comments: [string, number, string, number, string][]
+) => {
   let cleanedComments = [];
   for (let i = 0; i < comments.length; i++) {
     cleanedComments.push(comments[i][0]);

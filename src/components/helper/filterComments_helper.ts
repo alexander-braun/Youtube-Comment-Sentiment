@@ -2,7 +2,10 @@
  * Prefilter the comments into positive and negative comments
  * Makes the sorting easier later
  */
-export const filterComments = (comments) => {
+
+type comments = [string, number, string, number, string, number?][];
+
+export const filterComments = (comments: comments) => {
   let positive = [];
   let negative = [];
   for (let comment of comments) {
@@ -20,19 +23,20 @@ export const filterComments = (comments) => {
 };
 
 // Sort the comments by sentiment value
-const sortCommentsBySentiment = (comments, indicator) => {
-  let sorted = [];
-  let values = [];
+const sortCommentsBySentiment = (comments: comments, indicator: string) => {
+  let sorted: comments = [];
+  let values: number[] = [];
 
   // Give the comments ID's for later identification
+  let commentsCopy: comments = comments.slice();
   let index = 0;
-  for (let comment of comments) {
+  for (let comment of commentsCopy) {
     comment.push(index);
     index++;
   }
 
   // Get all the sentiment-values
-  for (let comment of comments) {
+  for (let comment of commentsCopy) {
     values.push(comment[3]);
   }
 
@@ -47,10 +51,14 @@ const sortCommentsBySentiment = (comments, indicator) => {
    * Go through the values and find their belonging comment - if the
    * index is already used, continue searching for the belonging value
    */
-  const usedIndexes = [];
+  const usedIndexes: number[] = [];
   for (let value of values) {
-    for (let comment of comments) {
-      if (comment[3] === value && usedIndexes.indexOf(comment[5]) === -1) {
+    for (let comment of commentsCopy) {
+      if (
+        comment[5] !== undefined &&
+        comment[3] === value &&
+        usedIndexes.indexOf(comment[5]) === -1
+      ) {
         sorted.push(comment);
         usedIndexes.push(comment[5]);
         break;

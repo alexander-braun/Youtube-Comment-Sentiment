@@ -1,11 +1,16 @@
 /**
  * Takes the highest and lowest comments and gets the like count
  */
+
+type comment = [number, string];
+
+type comments = [string, number, string, number, string, number?][];
+
 export const findLikesForHighestAndLowestComment = (
-  highest,
-  lowest,
-  comments
-) => {
+  highest: comment,
+  lowest: comment,
+  comments: comments
+): [number, number] => {
   let highestCommentLikes = 0;
   let lowestCommentLikes = 0;
   for (const comment of comments) {

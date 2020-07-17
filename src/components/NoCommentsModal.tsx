@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { toggleNoCommentsModal } from '../actions/toggleNoCommentsModal';
 
-const NoCommentsModal = () => {
+const NoCommentsModal: React.FC = () => {
   const dispatch = useDispatch();
   return (
     <div className="no-comments-modal">

@@ -3,16 +3,23 @@ import { useSelector } from 'react-redux';
 import Bubblechart from './Bubblechart';
 import HighestLowestAverage from './HighestLowestAverage';
 import InfiniteScrollWindow from './InfiniteScrollWindow';
+import { AppState } from '../reducers';
 
 function Display() {
-  const sentiment = useSelector((state) => state.sentiment.sentiment);
-  const sentimentCount = useSelector((state) => state.sentiment.sentimentCount);
-  const highestComment = useSelector((state) => state.sentiment.highestComment);
-  const lowestComment = useSelector((state) => state.sentiment.lowestComment);
-  const videoTitle = useSelector((state) => state.videoTitle);
-  const keyCounts = useSelector((state) => state.keyCounts);
+  const sentiment = useSelector((state: AppState) => state.sentiment.sentiment);
+  const sentimentCount = useSelector(
+    (state: AppState) => state.sentiment.sentimentCount
+  );
+  const highestComment = useSelector(
+    (state: AppState) => state.sentiment.highestComment
+  );
+  const lowestComment = useSelector(
+    (state: AppState) => state.sentiment.lowestComment
+  );
+  const videoTitle = useSelector((state: AppState) => state.videoTitle);
+  const keyCounts = useSelector((state: AppState) => state.keyCounts);
   const singleWordSentiments = useSelector(
-    (state) => state.singleWordSentiments
+    (state: AppState) => state.singleWordSentiments
   );
 
   if (!sentiment) return null;

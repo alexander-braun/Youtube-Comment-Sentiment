@@ -97,7 +97,6 @@ function Search({ noCommentsModal }) {
   };
 
   const classes = SearchStyles();
-  console.log(noCommentsModal);
   return (
     <div className="search">
       <form className="search__form">

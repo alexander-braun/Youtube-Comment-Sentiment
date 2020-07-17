@@ -8,7 +8,7 @@ import { singleWordSentiments } from './singleWordSentiments';
 import { choice } from './choice';
 import { noCommentsModal } from './noCommentsModal';
 
-export default combineReducers({
+export const rootReducer = combineReducers({
   videoTitle,
   sentiment,
   keyCounts,
@@ -18,3 +18,5 @@ export default combineReducers({
   choice,
   noCommentsModal,
 });
+
+export type AppState = ReturnType<typeof rootReducer>;
