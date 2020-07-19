@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { setChoice } from '../actions/setChoice';
 
 function Bubblechart({ data, dataSingleWords }) {
+  console.log(data);
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);

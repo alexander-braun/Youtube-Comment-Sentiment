@@ -6,6 +6,7 @@ import {
   SET_COMMENT_COUNT,
   AppActions,
 } from './constants';
+import { SentimentCount, HighLowComment } from '../components/types/Comment';
 
 export const setSentiment = (sentiment: number): AppActions => ({
   type: SET_SENTIMENT,
@@ -13,21 +14,21 @@ export const setSentiment = (sentiment: number): AppActions => ({
 });
 
 export const setSentimentCount = (
-  sentimentCount: [number, number, number]
+  sentimentCount: SentimentCount
 ): AppActions => ({
   type: SET_SENTIMENT_COUNT,
   sentimentCount,
 });
 
 export const setHighestComment = (
-  highestComment: [number, string]
+  highestComment: HighLowComment
 ): AppActions => ({
   type: SET_HIGHEST_COMMENT,
   highestComment,
 });
 
 export const setLowestComment = (
-  lowestComment: [number, string]
+  lowestComment: HighLowComment
 ): AppActions => ({
   type: SET_LOWEST_COMMENT,
   lowestComment,

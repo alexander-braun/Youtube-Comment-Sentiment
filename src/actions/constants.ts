@@ -1,5 +1,15 @@
-export const SET_VIDEO_TITLE = 'SET_VIDEO_TITLE';
+import { SingleWords } from '../components/types/SingleWord';
+import { HighLowCommentCount, Comment } from '../components/types/Comment';
+import { KeyCounts } from '../components/types/KeyCounts';
+import { Choice } from '../components/types/Choice';
+import {
+  HighLowComment,
+  SentimentCount,
+  Sentiment,
+  CommentCount,
+} from '../components/types/Comment';
 
+export const SET_VIDEO_TITLE = 'SET_VIDEO_TITLE';
 export const SET_SENTIMENT = 'SET_SENTIMENT';
 export const SET_SENTIMENT_COUNT = 'SET_SENTIMENT_COUNT';
 export const SET_HIGHEST_COMMENT = 'SET_HIGHEST_COMMENT';
@@ -15,8 +25,6 @@ export const SET_HIGHEST_SENTIMENT_SINGLE_WORDS =
   'SET_HIGHEST_SENTIMENT_SINGLE_WORD';
 export const SET_LOWEST_SENTIMENT_SINGLE_WORDS =
   'SET_LOWEST_SENTIMENT_SINGLE_WORD';
-
-type SingleWords = { word: string; sentiment: number; category?: number }[];
 
 export interface SetHighestSentimentSingleWords {
   type: typeof SET_HIGHEST_SENTIMENT_SINGLE_WORDS;
@@ -34,22 +42,22 @@ export interface ToggleModal {
 
 export interface SetHighLowCommentCount {
   type: typeof SET_HIGHEST_AND_LOWEST_COMMENT_COUNT;
-  highLowCommentCount: [number, number];
+  highLowCommentCount: HighLowCommentCount;
 }
 
 export interface SetKeyCounts {
   type: typeof SET_KEYCOUNTS;
-  keyCounts: { [key: string]: number };
+  keyCounts: KeyCounts;
 }
 
 export interface SetComments {
   type: typeof SET_COMMENTS;
-  comments: [string, number, string, number, string][];
+  comments: Comment[];
 }
 
 export interface setChoice {
   type: typeof SET_CHOICE;
-  choice: 'keywords' | 'compare-sentiment';
+  choice: Choice;
 }
 
 export interface SetVideoTitle {
@@ -59,27 +67,27 @@ export interface SetVideoTitle {
 
 export interface SetSentiment {
   type: typeof SET_SENTIMENT;
-  sentiment: number;
+  sentiment: Sentiment;
 }
 
 export interface SetSentimentCount {
   type: typeof SET_SENTIMENT_COUNT;
-  sentimentCount: [number, number, number];
+  sentimentCount: SentimentCount;
 }
 
 export interface SetHighestComment {
   type: typeof SET_HIGHEST_COMMENT;
-  highestComment: [number, string];
+  highestComment: HighLowComment;
 }
 
 export interface SetLowestComment {
   type: typeof SET_LOWEST_COMMENT;
-  lowestComment: [number, string];
+  lowestComment: HighLowComment;
 }
 
 export interface SetCommentCount {
   type: typeof SET_COMMENT_COUNT;
-  commentCount: number;
+  commentCount: CommentCount;
 }
 
 export type CommentCountActionTypes = SetHighLowCommentCount;
@@ -90,7 +98,7 @@ export type ChartChoiceActionTypes = setChoice;
 
 export type CommentsActionTypes = SetComments;
 
-export type KeyCounts = SetKeyCounts;
+export type KeyCountsActionTypes = SetKeyCounts;
 
 export type ModalActionTypes = ToggleModal;
 
@@ -111,6 +119,6 @@ export type AppActions =
   | VideoTitleActionTypes
   | CommentsActionTypes
   | CommentCountActionTypes
-  | KeyCounts
+  | KeyCountsActionTypes
   | ModalActionTypes
   | SingleWordSentimentsActionTypes;

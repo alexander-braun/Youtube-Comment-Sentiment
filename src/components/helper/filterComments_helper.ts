@@ -2,9 +2,9 @@
  * Prefilter the comments into positive and negative comments
  * Makes the sorting easier later
  */
-import { comment } from '../types/Comment';
+import { Comment } from '../types/Comment';
 
-export const filterComments = (comments: comment[]) => {
+export const filterComments = (comments: Comment[]) => {
   let positive = [];
   let negative = [];
   for (let comment of comments) {
@@ -22,12 +22,12 @@ export const filterComments = (comments: comment[]) => {
 };
 
 // Sort the comments by sentiment value
-const sortCommentsBySentiment = (comments: comment[], indicator: string) => {
-  let sorted: comment[] = [];
+const sortCommentsBySentiment = (comments: Comment[], indicator: string) => {
+  let sorted: Comment[] = [];
   let values: number[] = [];
 
   // Give the comments ID's for later identification
-  let commentsCopy: comment[] = comments.slice();
+  let commentsCopy: Comment[] = comments.slice();
   let index = 0;
   for (let comment of commentsCopy) {
     comment.push(index);

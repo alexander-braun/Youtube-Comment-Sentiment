@@ -46,8 +46,8 @@ interface Props {
 
 function Search(props: Props) {
   const noCommentsModal = props.noCommentsModal;
-  const [videoLink, updateVideoLink] = useState('');
-  const [videoID, updateVideoID]: [undefined | string, Function] = useState();
+  const [videoLink, updateVideoLink] = useState<string>('');
+  const [videoID, updateVideoID] = useState<string>('');
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -59,7 +59,6 @@ function Search(props: Props) {
   // Main knot to get all needed information from the api
   const getSearchResults = async (e: React.MouseEvent) => {
     e.preventDefault();
-
     // Get and set Video Title
     if (videoID !== undefined) {
       let videoTitle: string | null = await fetchVideoTitle(videoID);

@@ -6,8 +6,9 @@ import {
   SET_COMMENT_COUNT,
   SentimentActionTypes,
 } from '../actions/constants';
+import { AverageSentiment } from '../components/types/Comment';
 
-const initialState: sentiment = {
+const initialState: AverageSentiment = {
   sentiment: 0,
   sentimentCount: [0, 0, 0],
   highestComment: [NaN, ''],
@@ -15,18 +16,10 @@ const initialState: sentiment = {
   commentCount: 0,
 };
 
-interface sentiment {
-  sentiment: number;
-  sentimentCount: [number, number, number];
-  highestComment: [number, string];
-  lowestComment: [number, string];
-  commentCount: number;
-}
-
 export const sentiment = (
-  state: sentiment = initialState,
+  state: AverageSentiment = initialState,
   action: SentimentActionTypes
-): sentiment => {
+): AverageSentiment => {
   switch (action.type) {
     case SET_SENTIMENT:
       return {

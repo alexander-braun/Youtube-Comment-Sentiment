@@ -5,18 +5,18 @@ import InfiniteScroll from 'react-infinite-scroller';
 //Helper
 import { filterComments } from './helper/filterComments_helper';
 import { AppState } from '../reducers';
-import { comment } from './types/Comment';
+import { Comment } from './types/Comment';
 
 function InfiniteScrollWindow() {
   let comments = useSelector((state: AppState) => state.comments);
   let [commentsFiltered, setCommentsFiltered] = useState<
-    comment[][] | undefined
+    Comment[][] | undefined
   >();
   let [positiveComments, setPositiveComments] = useState<
-    comment[] | undefined
+    Comment[] | undefined
   >();
   let [negativeComments, setNegativeComments] = useState<
-    comment[] | undefined
+    Comment[] | undefined
   >();
   const [hasmoreItems, setHasmoreItems] = useState(true);
 

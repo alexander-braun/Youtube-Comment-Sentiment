@@ -3,29 +3,17 @@ import {
   SET_LOWEST_SENTIMENT_SINGLE_WORDS,
   SingleWordSentimentsActionTypes,
 } from '../actions/constants';
+import { SingleWordsSentiment } from '../components/types/SingleWord';
 
 const initialState = {
   highestSingleWords: {},
   lowestSingleWords: {},
 };
 
-interface singleWordSentiments {
-  highestSingleWords: oneWordSentiments | {};
-  lowestSingleWords: oneWordSentiments | {};
-}
-
-interface oneWordSentiments {
-  highestSingleWords: {
-    word: string;
-    sentiment: number;
-    category?: number;
-  }[];
-}
-
 export const singleWordSentiments = (
-  state: singleWordSentiments = initialState,
+  state: SingleWordsSentiment = initialState,
   action: SingleWordSentimentsActionTypes
-): singleWordSentiments => {
+): SingleWordsSentiment => {
   switch (action.type) {
     case SET_HIGHEST_SENTIMENT_SINGLE_WORDS:
       return {

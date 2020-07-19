@@ -3,12 +3,13 @@ import { scaleLinear } from 'd3';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { AppState } from '../reducers';
+import { HighLowComment, Sentiment, SentimentCount } from './types/Comment';
 
 interface HighestLowestAverage {
-  lowestComment: [number, string];
-  highestComment: [number, string];
-  sentiment: number;
-  sentimentCount: [number, number, number];
+  lowestComment: HighLowComment;
+  highestComment: HighLowComment;
+  sentiment: Sentiment;
+  sentimentCount: SentimentCount;
 }
 
 function HighestLowestAverage({
