@@ -2,15 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import InfiniteScroll from 'react-infinite-scroller';
-
 //Helper
 import { filterComments } from './helper/filterComments_helper';
+import { AppState } from '../reducers';
+import { comment } from './types/Comment';
 
 function InfiniteScrollWindow() {
-  let comments = useSelector((state) => state.comments);
-  let [commentsFiltered, setCommentsFiltered] = useState();
-  let [positiveComments, setPositiveComments] = useState();
-  let [negativeComments, setNegativeComments] = useState();
+  let comments = useSelector((state: AppState) => state.comments);
+  let [commentsFiltered, setCommentsFiltered] = useState<
+    comment[][] | undefined
+  >();
+  let [positiveComments, setPositiveComments] = useState<
+    comment[] | undefined
+  >();
+  let [negativeComments, setNegativeComments] = useState<
+    comment[] | undefined
+  >();
   const [hasmoreItems, setHasmoreItems] = useState(true);
 
   /**
@@ -29,21 +36,25 @@ function InfiniteScrollWindow() {
   }, [commentsFiltered]);
 
   const loadMorePositive = () => {
-    let count = positiveComments.length + 5;
-    if (count >= commentsFiltered[0].length) {
-      setHasmoreItems(false);
-      return;
+    if (positiveComments !== undefined && commentsFiltered !== undefined) {
+      let count = positiveComments.length + 5;
+      if (count >= commentsFiltered[0].length) {
+        setHasmoreItems(false);
+        return;
+      }
+      setPositiveComments(commentsFiltered[0].slice(0, count));
     }
-    setPositiveComments(commentsFiltered[0].slice(0, count));
   };
 
   const loadMoreNegative = () => {
-    let count = negativeComments.length + 5;
-    if (count >= commentsFiltered[1].length) {
-      setHasmoreItems(false);
-      return;
+    if (negativeComments !== undefined && commentsFiltered !== undefined) {
+      let count = negativeComments.length + 5;
+      if (count >= commentsFiltered[1].length) {
+        setHasmoreItems(false);
+        return;
+      }
+      setNegativeComments(commentsFiltered[1].slice(0, count));
     }
-    setNegativeComments(commentsFiltered[1].slice(0, count));
   };
 
   if (!positiveComments || !negativeComments) return null;
@@ -65,9 +76,6 @@ function InfiniteScrollWindow() {
             </div>
           }
           useWindow={false}
-          getScrollParent={() =>
-            document.getElementsByClassName('infinite-scroll')[0]
-          }
         >
           {positiveComments &&
             positiveComments.map((comment) => {
@@ -97,9 +105,6 @@ function InfiniteScrollWindow() {
             </div>
           }
           useWindow={false}
-          getScrollParent={() =>
-            document.getElementsByClassName('infinite-scroll')[1]
-          }
         >
           {negativeComments &&
             negativeComments.map((comment) => {
