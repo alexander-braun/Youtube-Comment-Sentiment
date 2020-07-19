@@ -102,6 +102,7 @@ function Search(props: Props) {
     let keywords = getKeywordsFromComments(cleanedComments);
     let uniqueKeywordCounts = countKeywords(keywords);
     dispatch(setKeycounts(uniqueKeywordCounts));
+    updateVideoLink('');
   };
 
   const classes = SearchStyles();
