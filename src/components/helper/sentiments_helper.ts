@@ -1,5 +1,7 @@
+import { SingleWord } from '../types/SingleWord';
 var Analyzer = require('natural').SentimentAnalyzer;
 var stemmer = require('natural').PorterStemmer;
+const analyzer = new Analyzer('English', stemmer, 'afinn');
 
 /**
  * Goes through all the comments and finds words <= -1 or >= 1 and puts them in an array
@@ -8,11 +10,15 @@ var stemmer = require('natural').PorterStemmer;
  * Gets the overall sentiment
  */
 
-const singleWordSentiments = (tokenized, lowWords, highWords, analyzer) => {
+const singleWordSentiments = (
+  tokenized: string[],
+  lowWords: SingleWord[],
+  highWords: SingleWord[]
+): void => {
   let sentimentSingle;
   for (let j = 0; j < tokenized.length; j++) {
     sentimentSingle = parseFloat(analyzer.getSentiment([tokenized[j]]));
-    let obj = {};
+    let obj: { word: string; sentiment: number } = { word: '', sentiment: 0 };
     if (sentimentSingle <= -1) {
       obj['word'] = tokenized[j];
       obj['sentiment'] = sentimentSingle;
@@ -25,13 +31,23 @@ const singleWordSentiments = (tokenized, lowWords, highWords, analyzer) => {
   }
 };
 
-const getWholeCommentSentiment = (comments, length) => {
+type getWholeCommentSentiment = [
+  [number, string],
+  [number, string],
+  [number, number, number],
+  number
+];
+
+const getWholeCommentSentiment = (
+  comments: string[],
+  length: number
+): getWholeCommentSentiment => {
   const analyzer = new Analyzer('English', stemmer, 'afinn');
 
-  let highest = [-10, null];
-  let lowest = [10, null];
-  let sentimentCount = [0, 0, 0];
-  let sentiments = parseFloat(0);
+  let highest: [number, string] = [-10, ''];
+  let lowest: [number, string] = [10, ''];
+  let sentimentCount: [number, number, number] = [0, 0, 0];
+  let sentiments = 0;
 
   for (let i = 0; i < length; i++) {
     let tokenized = comments[i].split(' ');
@@ -52,27 +68,36 @@ const getWholeCommentSentiment = (comments, length) => {
       sentiments += sentiment;
     }
   }
-
   return [highest, lowest, sentimentCount, sentiments];
 };
 
-const getHighestAndLowestSingleWordSentiments = (comments, length) => {
-  let analyzer = new Analyzer('English', stemmer, 'afinn');
-
+const getHighestAndLowestSingleWordSentiments = (
+  comments: string[],
+  length: number
+): [SingleWord[], SingleWord[]] => {
   // Array of objects collecting words <= -1 or >= 1
-  let lowWords = [];
-  let highWords = [];
+  let lowWords: SingleWord[] = [];
+  let highWords: SingleWord[] = [];
 
   for (let i = 0; i < length; i++) {
     let tokenized = comments[i].split(' ');
     // Get the single word sentiments
-    singleWordSentiments(tokenized, lowWords, highWords, analyzer, i);
+    singleWordSentiments(tokenized, lowWords, highWords);
   }
 
   return [highWords, lowWords];
 };
 
-export const sentiments = (comments) => {
+export const sentiments = (
+  comments: string[]
+): [
+  number,
+  [number, number, number],
+  [number, string],
+  [number, string],
+  SingleWord[],
+  SingleWord[]
+] => {
   let length = comments.length;
   const highestLowestWords = getHighestAndLowestSingleWordSentiments(
     comments,

@@ -3,22 +3,17 @@ import {
   SET_LOWEST_SENTIMENT_SINGLE_WORDS,
   AppActions,
 } from './constants';
-
-interface Singleword {
-  word: string;
-  sentiment: number;
-  category?: number;
-}
+import { SingleWord } from '../components/types/SingleWord';
 
 export const setHighestSingleWords = (
-  highestSingleWords: Singleword[]
+  highestSingleWords: SingleWord[]
 ): AppActions => ({
   type: SET_HIGHEST_SENTIMENT_SINGLE_WORDS,
   highestSingleWords,
 });
 
 export const setLowestSingleWords = (
-  lowestSingleWords: Singleword[]
+  lowestSingleWords: SingleWord[]
 ): AppActions => ({
   type: SET_LOWEST_SENTIMENT_SINGLE_WORDS,
   lowestSingleWords,

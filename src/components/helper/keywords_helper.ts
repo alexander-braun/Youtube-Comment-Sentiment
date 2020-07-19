@@ -4,7 +4,7 @@ type keyCount = { [key: string]: number };
 /**
  * Counts Keywords for the bubblechart comparsion
  */
-export const countKeywords = (keywords: string[]) => {
+export const countKeywords = (keywords: string[][]): keyCount => {
   // Get all the unique keywords
   const uniqueKeywords: string[] = [];
   for (let i = 0; i < keywords.length; i++) {
@@ -29,7 +29,7 @@ export const countKeywords = (keywords: string[]) => {
  * Gets english lang keywords with the help of keywordextractor
  * from all the comments for the bubblechart
  */
-export const getKeywordsFromComments = (comments: string[]) => {
+export const getKeywordsFromComments = (comments: string[]): string[][] => {
   let keywords: string[][] = [];
   for (let i = 0; i < comments.length; i++) {
     let extraction: string[] = keyword_extractor.extract(comments[i], {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { connect } from 'react-redux';
+import { AppState } from '../reducers';
 
 //MUI
 import SearchIcon from '@material-ui/icons/Search';
@@ -39,9 +40,14 @@ import { SearchStyles } from './SearchStyles';
 //Components
 import NoCommentsModal from './NoCommentsModal';
 
-function Search({ noCommentsModal }) {
+interface Props {
+  noCommentsModal: boolean;
+}
+
+function Search(props: Props) {
+  const noCommentsModal = props.noCommentsModal;
   const [videoLink, updateVideoLink] = useState('');
-  const [videoID, updateVideoID] = useState();
+  const [videoID, updateVideoID]: [undefined | string, Function] = useState();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,13 +57,16 @@ function Search({ noCommentsModal }) {
   }, [videoLink]);
 
   // Main knot to get all needed information from the api
-  const getSearchResults = async (e) => {
+  const getSearchResults = async (e: React.MouseEvent) => {
     e.preventDefault();
 
     // Get and set Video Title
-    let videoTitle = await fetchVideoTitle(videoID);
-    dispatch(setVideoTitle(videoTitle));
-
+    if (videoID !== undefined) {
+      let videoTitle: string | null = await fetchVideoTitle(videoID);
+      if (videoTitle !== null) {
+        dispatch(setVideoTitle(videoTitle));
+      }
+    } else return null;
     // Get last 100 comments (YT always returns 100 if there are at least 100 comments)
     let comments = await fetchComments(videoID);
     //Method returns false when comments are deactivated
@@ -123,7 +132,11 @@ function Search({ noCommentsModal }) {
   );
 }
 
-const mapStateToProps = (state) => ({
+interface StateProps {
+  noCommentsModal: boolean;
+}
+
+const mapStateToProps = (state: AppState): StateProps => ({
   noCommentsModal: state.noCommentsModal,
 });
 
