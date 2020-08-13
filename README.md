@@ -1,7 +1,7 @@
 <h1 align="center">
     <br>
     <a href="https://alexander-braun.github.io/consensus/">
-        Consensus 
+        Live Demo: Consensus 
     </a>
 </h1>
 
