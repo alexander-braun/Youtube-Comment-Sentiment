@@ -5,13 +5,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: $color-white;
-  border-radius: $border-radius-max;
   margin-bottom: 10vh;
-  box-shadow: $small-shadow;
 
   background-color: rgb(255, 255, 255);
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 30px -15px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 5px 30px -15px;
   padding: 2rem;
   border-radius: 0.45rem;
 
@@ -38,23 +35,21 @@
     font-family: $open-sans;
     font-size: 1.5rem;
     width: fit-content;
-    padding: 0;
     margin-right: 1.5rem;
     margin-left: 1.5rem;
     padding: 0.5rem;
     outline: transparent;
-    margin: 0;
     padding-left: 10px;
     padding-right: 10px;
     //border-bottom: 0px solid $color-black;
     background-image: linear-gradient(
       90deg,
       rgba(209, 213, 218, 0) 50%,
-      rgba(255, 255, 255, 0) 0px
+      rgba(255, 255, 255, 0) 0
     );
     background-size: 10px 2px;
     padding-bottom: 6px;
-    margin: 0px;
+    margin: 0;
     background-position: center bottom;
     background-repeat: repeat-x;
 
@@ -66,7 +61,7 @@
       background-image: linear-gradient(
         90deg,
         rgb(209, 213, 218) 50%,
-        rgba(255, 255, 255, 0) 0px
+        rgba(255, 255, 255, 0) 0
       );
     }
   }

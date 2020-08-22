@@ -12,12 +12,12 @@ interface HighestLowestAverage {
   sentimentCount: SentimentCount;
 }
 
-function HighestLowestAverage({
+const HighestLowestAverage = ({
   lowestComment,
   highestComment,
   sentiment,
   sentimentCount,
-}: HighestLowestAverage) {
+}: HighestLowestAverage) => {
   const highestCommentLikes = useSelector(
     (state: AppState) => state.highestAndLowestCommentCount[0]
   );
@@ -116,7 +116,11 @@ function HighestLowestAverage({
     }
     return output;
   };
-  return <div className="comments">{generateSentimentField()}</div>;
-}
+  return (
+    <div className="comments" style={{ position: 'relative', padding: '0' }}>
+      {generateSentimentField()}
+    </div>
+  );
+};
 
 export default HighestLowestAverage;
